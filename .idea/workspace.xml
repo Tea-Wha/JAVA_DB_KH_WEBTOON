@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0f1de98b-469c-46a1-9a10-2487c1713fca" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/ojdbc11.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DB_JDBC.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Main_Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Main_Create_Table.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/common/Common.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/Board_Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/Comment_Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/Comment_Evaluation_Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/Favorite_Genre_Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/Genre_Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/Member_Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/Member_Type_Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/Platform_Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/Post_Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controller/Webtoon_Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dao/Board_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dao/Comment_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dao/Comment_Evaluation_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dao/Favorite_Genre_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dao/Genre_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dao/Member_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dao/Member_Type_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dao/Platform_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dao/Post_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dao/Webtoon_DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/vo/Board_VO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/vo/Comment_Evaluation_VO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/vo/Comment_VO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/vo/Favorite_Genre_VO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/vo/Genre_VO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/vo/Member_Type_VO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/vo/Member_VO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/vo/Platform_VO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/vo/Post_VO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/vo/Webtoon_VO.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="2nrTuniUFaqU2TzGZjCvIQodV6S" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/user1/Downloads/ojdbc11.jar",
+    "onboarding.tips.debug.path": "D:/dev/java/DB_Project/DB_JDBC/src/Main.java",
+    "project.structure.last.edited": "라이브러리",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "애플리케이션.Main.executor": "Run",
+    "애플리케이션.Main_Create_Table.executor": "Run"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="애플리케이션 수준" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="디폴트 작업">
+      <changelist id="0f1de98b-469c-46a1-9a10-2487c1713fca" name="변경" comment="" />
+      <created>1729730421596</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1729730421596</updated>
+    </task>
+    <servers />
+  </component>
+</project>
