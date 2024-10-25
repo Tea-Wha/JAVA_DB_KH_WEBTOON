@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-//        board_Function_Test();
-        comment_Function_Test();
+          board_Function_Test();
+//        comment_Function_Test();
     }
     public static void board_Function_Test(){
         Scanner scanner = new Scanner(System.in);

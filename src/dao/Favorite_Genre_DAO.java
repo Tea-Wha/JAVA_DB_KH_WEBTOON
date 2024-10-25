@@ -94,16 +94,16 @@ public class Favorite_Genre_DAO {
         }
     }
     // INSERT Input 데이터 받는 기능 -> ADMIN 전용 기능
-    public static Member_VO member_Insert_Input(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("회원 정보 입력");
-        System.out.print("댓글 내용 : ");
-        String comment_Content = scanner.nextLine();
-        System.out.print("회원 번호 : ");
-        int member_Num = scanner.nextInt();
-        System.out.print("게시글 번호 : ");
-        int post_Num = scanner.nextInt();
-        Comment_VO vo = new Comment_VO(comment_Content, member_Num, post_Num);
-        return vo;
-    }
+//    public static Member_VO member_Insert_Input(){
+//        Scanner scanner = new Scanner(System.in);
+//        System.out.println("회원 정보 입력");
+//        System.out.print("댓글 내용 : ");
+//        String comment_Content = scanner.nextLine();
+//        System.out.print("회원 번호 : ");
+//        int member_Num = scanner.nextInt();
+//        System.out.print("게시글 번호 : ");
+//        int post_Num = scanner.nextInt();
+//        Comment_VO vo = new Comment_VO(comment_Content, member_Num, post_Num);
+//        return vo;
+//    }
 }
