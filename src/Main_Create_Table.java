@@ -9,7 +9,7 @@ public class Main_Create_Table {
         Platform_DAO pldao = new Platform_DAO(); Genre_DAO gdao = new Genre_DAO();
         Favorite_Genre_DAO fgdao = new Favorite_Genre_DAO(); Board_DAO bdao = new Board_DAO();
         Webtoon_DAO wdao = new Webtoon_DAO(); Post_DAO pdao = new Post_DAO();
-        Comment_DAO cdao = new Comment_DAO(); Comment_Evaluation_DAO cedao = new Comment_Evaluation_DAO();
+        Reply_DAO cdao = new Reply_DAO(); Reply_Evaluation_DAO cedao = new Reply_Evaluation_DAO();
         mtdao.member_Type_Create();
         mdao.memberCreate();
         pldao.platformCreate();
@@ -18,7 +18,7 @@ public class Main_Create_Table {
         bdao.boardCreate();
         wdao.webtoonCreate();
         pdao.postCreate();
-        cdao.commentCreate();
-        cedao.comment_Eval_Create();
+        cdao.replyCreate();
+        cedao.reply_Eval_Create();
     }
 }

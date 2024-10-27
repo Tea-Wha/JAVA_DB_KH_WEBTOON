@@ -25,6 +25,7 @@ public class Common {
 //            System.out.println("오라클 DB 연결 성공");
         }
         catch (Exception e){
+            System.out.println(e);
             System.out.println("오라클 DB 연결 실패");
         }
         return conn;

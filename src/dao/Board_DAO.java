@@ -2,7 +2,6 @@ package dao;
 
 import common.Common;
 import vo.Board_VO;
-import vo.Board_VO_Mod;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -89,7 +88,7 @@ public class Board_DAO {
     }
     // UPDATE 기능 구현 -> ADMIN 전용 기능
     // 게시판 유형 번호 및 이름 변경 기능
-    public boolean boardUpdate(Board_VO_Mod vo){
+    public boolean boardUpdate(Board_VO vo){
         String sql = "UPDATE 게시판유형 SET 게시판유형번호 = ?, 게시판이름 = ? WHERE 게시판이름 = ?";
         try{
             conn = Common.getConnection();
@@ -110,7 +109,7 @@ public class Board_DAO {
         }
     }
     // UPDATE Input 데이터 받는 기능 -> ADMIN 전용 기능
-    public static Board_VO_Mod board_Update_Input(){
+    public static Board_VO board_Update_Input(){
         Scanner scanner = new Scanner(System.in);
         System.out.print("변경할 게시판 이름 입력 : ");
         String boardName_before = scanner.next();
@@ -118,7 +117,7 @@ public class Board_DAO {
         String boardName_after = scanner.next();
         System.out.print("변경 후 게시판 번호 입력 : ");
         int boardNum = scanner.nextInt();
-        Board_VO_Mod vo = new Board_VO_Mod(boardNum, boardName_before, boardName_after);
+        Board_VO vo = new Board_VO(boardNum, boardName_before, boardName_after);
         return vo;
     }
     // INSERT 기능 구현 -> ADMIN 전용 기능

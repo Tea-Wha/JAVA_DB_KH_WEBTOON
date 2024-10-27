@@ -1,12 +1,14 @@
 import dao.Board_DAO;
-import dao.Comment_DAO;
+import dao.Member_Type_DAO;
+import dao.Reply_DAO;
 
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-          board_Function_Test();
+//          board_Function_Test();
 //        comment_Function_Test();
+//        member_Type_Function_Test();
     }
     public static void board_Function_Test(){
         Scanner scanner = new Scanner(System.in);
@@ -49,7 +51,7 @@ public class Main {
     }
     public static void comment_Function_Test(){
         Scanner scanner = new Scanner(System.in);
-        Comment_DAO dao = new Comment_DAO();
+        Reply_DAO dao = new Reply_DAO();
         boolean isSuccess;
         // MEMBER 전용 구현 추후 추가해야함
         while (true){
@@ -59,10 +61,10 @@ public class Main {
             int choice = scanner.nextInt();
             switch (choice){
                 case 1:
-                    dao.commentSelect_Result(dao.commentSelect());
+                    dao.replySelect_Result(dao.replySelect());
                     break;
                 case 2:
-                    isSuccess = dao.commentInsert(Comment_DAO.comment_Insert_Input());
+                    isSuccess = dao.replyInsert(Reply_DAO.reply_Insert_Input());
                     if (isSuccess) System.out.println("댓글 추가 성공");
                     else System.out.println("댓글 추가 실패");
                     break;
@@ -86,4 +88,44 @@ public class Main {
             }
         }
     }
+    public static void member_Type_Function_Test(){
+        Scanner scanner = new Scanner(System.in);
+        Member_Type_DAO dao = new Member_Type_DAO();
+        boolean isSuccess;
+        // ADMIN 전용 / MEMBER 기능 분리 구현 추후 추가해야함
+        while (true){
+            System.out.println("========= 회원종류유형 TABLE =========");
+            System.out.println("메뉴 선택");
+            System.out.print("[1]회원종류 보기 [2]회원종류 추가 [3]회원종류 수정 [4]회원종류 삭제 [5]종료 ");
+            int choice = scanner.nextInt();
+            switch (choice){
+                case 1:
+                    dao.memberTypeSelect_Result(dao.memberTypeSelect());
+                    break;
+                case 2:
+                    isSuccess = dao.memberType_Insert(Member_Type_DAO.memberTypeInsert_Input());
+                    if (isSuccess) System.out.println("회원종류 추가 성공");
+                    else System.out.println("회원종류 추가 실패");
+                    break;
+                case 3:
+                    isSuccess = dao.memberType_Update(Member_Type_DAO.memberTypeUpdate_Input());
+                    if (isSuccess) System.out.println("회원종류 수정 성공");
+                    else System.out.println("회원종류 추가 실패");
+                    break;
+                case 4:
+                    isSuccess = dao.memberType_Delete();
+                    if (isSuccess) System.out.println("회원종류 삭제 성공");
+                    else System.out.println("회원종류 삭제 실패");
+                    break;
+                case 5:
+                    System.out.println("회원종류 페이지 종료");
+                    return;
+                default:
+                    System.out.println("입력이 잘못 되었습니다.");
+                    break;
+
+            }
+        }
+    }
+
 }

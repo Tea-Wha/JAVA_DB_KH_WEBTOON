@@ -38,6 +38,13 @@ public class Member_VO {
         this.member_Exist = member_Exist;
         this.member_Type_Num = member_Type_Num;
     }
+    public Member_VO(String member_ID, String member_PW, String member_Email, Date member_Birth_Date, String member_Nickname) {
+        this.member_ID = member_ID;
+        this.member_PW = member_PW;
+        this.member_Email = member_Email;
+        this.member_Birth_Date = member_Birth_Date;
+        this.member_Nickname = member_Nickname;
+    }
     public int getMember_Num() {
         return member_Num;
     }
