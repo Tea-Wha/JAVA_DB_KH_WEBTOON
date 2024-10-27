@@ -20,6 +20,8 @@ public class Member_DAO {
     ResultSet rs = null;
     Scanner scanner = null;
     FileInputStream fileInputStream = null;
+    private String member_ID;
+    private Object member_PW;
 
     // Scanner 기능이 필요할 때 켜짐(?)
     public void Member_DAO_Scanner() {
@@ -88,7 +90,7 @@ public class Member_DAO {
         return list; // 리스트 반환
     }
     // 화면 결과 출력 구현
-    public void MemberSelect_Result(List<Member_VO> list){
+    public void memberSelect_Result(List<Member_VO> list){
         System.out.println("---------------------------------");
         System.out.println("            회원  정보            ");
         System.out.println("---------------------------------");
@@ -98,7 +100,7 @@ public class Member_DAO {
             System.out.print("비밀번호 : "+e.getMember_PW()+" ");
             System.out.print("이메일 : "+e.getMember_Email()+" ");
             System.out.print("생년월일 : "+e.getMember_Birth_Date()+" ");
-            System.out.print("닉네임 : "+e.getMember_Num()+" ");
+            System.out.print("닉네임 : "+e.getMember_Nickname()+" ");
             System.out.print("가입일 : "+e.getMember_Reg_Date()+" ");
             System.out.print("탈퇴여부 : "+e.getMember_Exist()+" ");
             System.out.print("회원종류번호 : "+e.getMember_Type_Num());
@@ -147,5 +149,100 @@ public class Member_DAO {
         String member_Nickname = scanner.next();
         Member_VO vo = new Member_VO(member_ID, member_PW, member_Email, member_Birth, member_Nickname);
         return vo;
+    }
+    // UPDATE 기능 구현 -> 회원 전용 기능 / 회원 페이지 (마이 페이지) 기능 -> 추후 수정 필요
+    // 회원 비밀번호 변경 기능
+    public boolean member_Update(Member_VO vo){
+        String sql = "UPDATE 회원 SET 비밀번호 = ? WHERE 아이디 = ? AND 비밀번호 = ?";
+        try{
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setString(1,vo.getMember_PW_Aft());
+            psmt.setString(2,vo.getMember_ID());
+            psmt.setString(3, vo.getMember_PW_Bef());
+            psmt.executeUpdate();
+            return true;
+        }
+        catch (Exception e){
+            System.out.println("회원 정보 변경 실패");
+            return false;
+        }
+        finally {
+            Common.close(psmt);
+            Common.close(conn);
+        }
+    }
+    // UPDATE Input 데이터 받는 기능 -> 회원 전용 기능
+    public static Member_VO memberUpdate_Input(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("ID 입력 : ");
+        String member_ID = scanner.next();
+        System.out.print("현재 PW 입력 : ");
+        String member_PW_before = scanner.next();
+        System.out.print("변경 PW 입력 : ");
+        String member_PW_after = scanner.next();
+        Member_VO vo = new Member_VO(member_ID, member_PW_before, member_PW_after);
+        return vo;
+    }
+    public boolean member_Delete() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("삭제 회원 ID 입력 : ");
+        String member_ID = scanner.next();
+        System.out.print("삭제 회원 PW 입력 : ");
+        String member_PW = scanner.next();
+        if (member_Check(member_ID, member_PW)) {
+            System.out.print("회원 탈퇴하시겠습니까? [1]예 [2]아니오 : ");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    String sql = "DELETE FROM 회원 WHERE 아이디 = ?";
+                    try {
+                        conn = Common.getConnection();
+                        psmt = conn.prepareStatement(sql);
+                        psmt.setString(1, member_ID);
+                        psmt.executeUpdate();
+                        return true;
+                    } catch (Exception e) {
+                        System.out.println("회원 탈퇴 실패");
+                        return false;
+                    } finally {
+                        Common.close(psmt);
+                        Common.close(conn);
+                    }
+                case 2:
+                    System.out.print("메뉴로 돌아갑니다.");
+                    return false;
+                default:
+                    System.out.print("입력이 잘못되었습니다. 메뉴로 돌아갑니다.");
+                    return false;
+            }
+        }
+        else return false;
+    }
+    public boolean member_Check(String member_ID, String member_PW){
+        this.member_ID = member_ID;
+        this.member_PW = member_PW;
+        boolean check = false;
+        String sql = "SELECT COUNT(*) FROM 회원 WHERE 아이디 = ? AND 비밀번호 = ?";
+        try{
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setString(1, member_ID);
+            psmt.setString(2, member_PW);
+            rs = psmt.executeQuery();
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    check = count > 0;
+                }
+            return check;
+        }
+        catch (Exception e){
+            System.out.print("입력된 정보가 일치하지 않습니다.");
+            return false;
+        }
+        finally {
+            Common.close(psmt);
+            Common.close(conn);
+        }
     }
 }

@@ -1,4 +1,5 @@
 import dao.Board_DAO;
+import dao.Member_DAO;
 import dao.Member_Type_DAO;
 import dao.Reply_DAO;
 
@@ -9,6 +10,7 @@ public class Main {
 //          board_Function_Test();
 //        comment_Function_Test();
 //        member_Type_Function_Test();
+        member_Function_Test();
     }
     public static void board_Function_Test(){
         Scanner scanner = new Scanner(System.in);
@@ -127,5 +129,43 @@ public class Main {
             }
         }
     }
+    public static void member_Function_Test(){
+        Scanner scanner = new Scanner(System.in);
+        Member_DAO dao = new Member_DAO();
+        boolean isSuccess;
+        // ADMIN 전용 / MEMBER 기능 분리 구현 추후 추가해야함
+        while (true){
+            System.out.println("========= 회원 TABLE =========");
+            System.out.println("메뉴 선택");
+            System.out.print("[1]회원 보기 [2]회원가입 [3]회원 정보 수정 [4]회원 삭제 [5]종료 ");
+            int choice = scanner.nextInt();
+            switch (choice){
+                case 1:
+                    dao.memberSelect_Result(dao.member_Select());
+                    break;
+                case 2:
+                    isSuccess = dao.member_Insert(Member_DAO.memberInsert_Input());
+                    if (isSuccess) System.out.println("회원가입 성공");
+                    else System.out.println("회원가입 실패");
+                    break;
+                case 3:
+                    isSuccess = dao.member_Update(Member_DAO.memberUpdate_Input());
+                    if (isSuccess) System.out.println("비밀번호 변경 성공");
+                    else System.out.println("비밀번호 변경 실패");
+                    break;
+                case 4:
+                    isSuccess = dao.member_Delete();
+                    if (isSuccess) System.out.println("회원 탈퇴 성공");
+                    else System.out.println("회원 탈퇴 실패");
+                    break;
+                case 5:
+                    System.out.println("회원 메뉴 종료");
+                    return;
+                default:
+                    System.out.println("입력이 잘못 되었습니다.");
+                    break;
 
+            }
+        }
+    }
 }

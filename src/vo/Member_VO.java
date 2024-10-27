@@ -26,6 +26,8 @@ public class Member_VO {
     private int member_Type_Num;
     // 회원종류번호 / INTEGER / NOT NULL,
     // FOREIGN KEY REFERENCES member_Type(member_Type_Num)
+    private String member_PW_Bef;
+    private String member_PW_Aft;
 
     public Member_VO(int member_Num, String member_ID, String member_PW, String member_Email, Date member_Birth_Date, String member_Nickname, Date member_Reg_Date, int member_Exist, int member_Type_Num) {
         this.member_Num = member_Num;
@@ -44,6 +46,11 @@ public class Member_VO {
         this.member_Email = member_Email;
         this.member_Birth_Date = member_Birth_Date;
         this.member_Nickname = member_Nickname;
+    }
+    public Member_VO(String member_ID, String member_PW_Bef, String member_PW_Aft) {
+        this.member_ID = member_ID;
+        this.member_PW_Bef = member_PW_Bef;
+        this.member_PW_Aft = member_PW_Aft;
     }
     public int getMember_Num() {
         return member_Num;
@@ -98,5 +105,17 @@ public class Member_VO {
     }
     public void setMember_Type_Num(int member_Type_Num) {
         this.member_Type_Num = member_Type_Num;
+    }
+    public String getMember_PW_Bef() {
+        return member_PW_Bef;
+    }
+    public void setMember_PW_Bef(String member_PW_Bef) {
+        this.member_PW_Bef = member_PW_Bef;
+    }
+    public String getMember_PW_Aft() {
+        return member_PW_Aft;
+    }
+    public void setMember_PW_Aft(String member_PW_Aft) {
+        this.member_PW_Aft = member_PW_Aft;
     }
 }
