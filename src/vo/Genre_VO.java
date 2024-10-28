@@ -7,9 +7,18 @@ public class Genre_VO {
     // 대표장르번호 / INTEGER / PRIMARY KEY
     private String genre_Name;
     // 대표장르이름 / VARCHAR2(30) / NOT NULL, UNIQUE
+    private String genre_Name_Bef;
+    private String genre_Name_Aft;
 
     public Genre_VO(int genre_Num, String genre_Name) {
         this.genre_Num = genre_Num;
+        this.genre_Name = genre_Name;
+    }
+    public Genre_VO(String genre_Name_Bef, String genre_Name_Aft) {
+        this.genre_Name_Bef = genre_Name_Bef;
+        this.genre_Name_Aft = genre_Name_Aft;
+    }
+    public Genre_VO(String genre_Name) {
         this.genre_Name = genre_Name;
     }
     public int getGenre_Num() {
@@ -23,5 +32,17 @@ public class Genre_VO {
     }
     public void setGenre_Name(String genre_Name) {
         this.genre_Name = genre_Name;
+    }
+    public String getGenre_Name_Bef() {
+        return genre_Name_Bef;
+    }
+    public void setGenre_Name_Bef(String genre_Name_Bef) {
+        this.genre_Name_Bef = genre_Name_Bef;
+    }
+    public String getGenre_Name_Aft() {
+        return genre_Name_Aft;
+    }
+    public void setGenre_Name_Aft(String genre_Name_Aft) {
+        this.genre_Name_Aft = genre_Name_Aft;
     }
 }

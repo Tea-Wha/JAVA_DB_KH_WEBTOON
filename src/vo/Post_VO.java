@@ -15,16 +15,33 @@ public class Post_VO {
     // CHECK LENGTH(post_Content) BETWEEN 1 AND 1000
     private Date post_Pub_Date;
     // 작성일 / DATE / NOT NULL
+    private int post_Visit;
+    // 조회수 / INTEGER / NOT NULL / DEFAULT 0 / CHECK 조회수 >= 0
     private int member_Num;
     // 회원번호 / INTEGER / NOT NULL, FK REFERENCES member(member_Num)
     private int board_Num;
     // 게시판유형번호 / INTEGER / NOT NULL, FK REFERENCES board(board_Num)
+    private String post_Title_Aft;
+    private String post_Content_Aft;
 
-    public Post_VO(int post_Num, String post_Title, String post_Content, Date post_Pub_Date, int member_Num, int board_Num) {
+
+    public Post_VO(int post_Num, String post_Title, String post_Content, Date post_Pub_Date, int post_Visit, int member_Num, int board_Num) {
         this.post_Num = post_Num;
         this.post_Title = post_Title;
         this.post_Content = post_Content;
         this.post_Pub_Date = post_Pub_Date;
+        this.post_Visit = post_Visit;
+        this.member_Num = member_Num;
+        this.board_Num = board_Num;
+    }
+    public Post_VO(int post_Num, String post_Title_Aft, String post_Content_Aft) {
+        this.post_Num = post_Num;
+        this.post_Title_Aft = post_Title_Aft;
+        this.post_Content_Aft = post_Content_Aft;
+    }
+    public Post_VO(String post_Title, String post_Content, int member_Num, int board_Num) {
+        this.post_Title = post_Title;
+        this.post_Content = post_Content;
         this.member_Num = member_Num;
         this.board_Num = board_Num;
     }
@@ -63,5 +80,23 @@ public class Post_VO {
     }
     public void setBoard_Num(int board_Num) {
         this.board_Num = board_Num;
+    }
+    public int getPost_Visit() {
+        return post_Visit;
+    }
+    public void setPost_Visit(int post_Visit) {
+        this.post_Visit = post_Visit;
+    }
+    public String getPost_Title_Aft() {
+        return post_Title_Aft;
+    }
+    public void setPost_Title_Aft(String post_Title_Aft) {
+        this.post_Title_Aft = post_Title_Aft;
+    }
+    public String getPost_Content_Aft() {
+        return post_Content_Aft;
+    }
+    public void setPost_Content_Aft(String post_Content_Aft) {
+        this.post_Content_Aft = post_Content_Aft;
     }
 }

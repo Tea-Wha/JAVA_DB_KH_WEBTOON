@@ -7,10 +7,17 @@ public class Platform_VO {
     // 플랫폼번호 / INTEGER / PRIMARY KEY
     private String platform_Name;
     // 플랫폼이름 / VARCHAR2(30) / UNIQUE, NOT NULL, CHECK IN ('네이버', '카카오')
+    private String platform_Name_Bef;
+    private String platform_Name_Aft;
 
     public Platform_VO(int platform_Num, String platform_Name) {
         this.platform_Num = platform_Num;
         this.platform_Name = platform_Name;
+    }
+    public Platform_VO(int platform_Num, String platform_Name_Bef, String platform_Name_Aft) {
+        this.platform_Num = platform_Num;
+        this.platform_Name_Bef = platform_Name_Bef;
+        this.platform_Name_Aft = platform_Name_Aft;
     }
     public int getPlatform_Num() {
         return platform_Num;
@@ -23,5 +30,17 @@ public class Platform_VO {
     }
     public void setPlatform_Name(String platform_Name) {
         this.platform_Name = platform_Name;
+    }
+    public String getPlatform_Name_Bef() {
+        return platform_Name_Bef;
+    }
+    public void setPlatform_Name_Bef(String platform_Name_Bef) {
+        this.platform_Name_Bef = platform_Name_Bef;
+    }
+    public String getPlatform_Name_Aft() {
+        return platform_Name_Aft;
+    }
+    public void setPlatform_Name_Aft(String platform_Name_Aft) {
+        this.platform_Name_Aft = platform_Name_Aft;
     }
 }
