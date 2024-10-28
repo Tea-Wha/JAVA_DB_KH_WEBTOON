@@ -6,9 +6,9 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 //          board_Function_Test();
-//        reply_Function_Test();
+        reply_Function_Test();
 //        member_Type_Function_Test();
-        member_Function_Test();
+//        member_Function_Test();
 //        platform_Function_Test();
 //        genre_Function_Test();
 //        post_Function_Test();
@@ -71,23 +71,22 @@ public class Main {
                     if (isSuccess) System.out.println("댓글 추가 성공");
                     else System.out.println("댓글 추가 실패");
                     break;
-//                case 3:
-//                    isSuccess = dao.boardUpdate(Board_DAO.board_Update_Input());
-//                    if (isSuccess) System.out.println("게시판 수정 성공");
-//                    else System.out.println("게시판 수정 실패");
-//                    break;
-//                case 4:
-//                    isSuccess = dao.boardDelete();
-//                    if (isSuccess) System.out.println("게시판 삭제 성공");
-//                    else System.out.println("게시판 삭제 실패");
-//                    break;
-//                case 5:
-//                    System.out.println("게시판 페이지 종료");
-//                    return;
+                case 3:
+                    isSuccess = dao.reply_Update(Reply_DAO.replyUpdate_Input());
+                    if (isSuccess) System.out.println("댓글 수정 성공");
+                    else System.out.println("댓글 수정 실패");
+                    break;
+                case 4:
+                    isSuccess = dao.reply_Delete();
+                    if (isSuccess) System.out.println("댓글 삭제 성공");
+                    else System.out.println("댓글 삭제 실패");
+                    break;
+                case 5:
+                    System.out.println("댓글 세션 종료");
+                    return;
                 default:
                     System.out.println("입력이 잘못 되었습니다.");
                     break;
-
             }
         }
     }

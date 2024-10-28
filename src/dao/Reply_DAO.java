@@ -109,17 +109,17 @@ public class Reply_DAO {
     // UPDATE 기능 구현 -> 댓글 작성자 전용 기능
     // 댓글 본문 수정 기능 / 날짜 업데이트 기능(?) X
     public boolean reply_Update(Reply_VO vo){
-        String sql = "UPDATE 댓글 SET 본문 = ?, 댓글번호 = ? WHERE 댓글번호 = ?";
+        String sql = "UPDATE 댓글 SET 본문 = ? WHERE 댓글번호 = ?";
         try{
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);
-            psmt.setString(1,vo.getReply_Content());
-            psmt.setInt(2,vo.getReply_Num());
-            psmt.setInt(3, vo.getReply_Num());
+            psmt.setString(1,vo.getReply_Content_Aft());
+            psmt.setInt(2, vo.getReply_Num());
             psmt.executeUpdate();
             return true;
         }
         catch (Exception e){
+            System.out.println(e);
             System.out.println("댓글 UPDATE 실패");
             return false;
         }
@@ -133,8 +133,8 @@ public class Reply_DAO {
         Scanner scanner = new Scanner(System.in);
         System.out.print("변경할 댓글 번호 입력 : ");
         int reply_Num = scanner.nextInt();
-        // 여기에 -> 권한 확인 코드
         scanner.nextLine();
+        // 여기에 -> 권한 확인 코드
         System.out.print("변경 후 댓글 본문 입력 : ");
         String reply_Content_after = scanner.nextLine();
         Reply_VO vo = new Reply_VO(reply_Num, reply_Content_after);
