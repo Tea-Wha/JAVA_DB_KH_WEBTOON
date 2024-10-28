@@ -8,10 +8,10 @@ public class Main {
 //          board_Function_Test();
 //        reply_Function_Test();
 //        member_Type_Function_Test();
-//        member_Function_Test();
+        member_Function_Test();
 //        platform_Function_Test();
 //        genre_Function_Test();
-        post_Function_Test();
+//        post_Function_Test();
     }
     public static void board_Function_Test(){
         Scanner scanner = new Scanner(System.in);
@@ -64,10 +64,10 @@ public class Main {
             int choice = scanner.nextInt();
             switch (choice){
                 case 1:
-                    dao.replySelect_Result(dao.replySelect());
+                    dao.replySelect_Result(dao.reply_Select());
                     break;
                 case 2:
-                    isSuccess = dao.replyInsert(Reply_DAO.reply_Insert_Input());
+                    isSuccess = dao.replyInsert(Reply_DAO.replyInsert_Input());
                     if (isSuccess) System.out.println("댓글 추가 성공");
                     else System.out.println("댓글 추가 실패");
                     break;

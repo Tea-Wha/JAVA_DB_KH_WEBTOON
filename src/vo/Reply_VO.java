@@ -21,18 +21,10 @@ public class Reply_VO {
     private int post_Num;
     // 게시글 번호 / INTEGER / FOREIGN KEY REFERENCES post(post_num),
     // NOT NULL
+    private String reply_Content_Aft;
 
     public Reply_VO(int reply_Num, String reply_Content, Date reply_Pub_Date, int reply_Like, int reply_Dislike, int member_Num, int post_Num) {
         this.reply_Num = reply_Num;
-        this.reply_Content = reply_Content;
-        this.reply_Pub_Date = reply_Pub_Date;
-        this.reply_Like = reply_Like;
-        this.reply_Dislike = reply_Dislike;
-        this.member_Num = member_Num;
-        this.post_Num = post_Num;
-    }
-
-    public Reply_VO(String reply_Content, Date reply_Pub_Date, int reply_Like, int reply_Dislike, int member_Num, int post_Num) {
         this.reply_Content = reply_Content;
         this.reply_Pub_Date = reply_Pub_Date;
         this.reply_Like = reply_Like;
@@ -44,6 +36,10 @@ public class Reply_VO {
         this.reply_Content = reply_Content;
         this.member_Num = member_Num;
         this.post_Num = post_Num;
+    }
+    public Reply_VO(int reply_Num, String reply_Content_Aft) {
+        this.reply_Num = reply_Num;
+        this.reply_Content_Aft = reply_Content_Aft;
     }
     public int getReply_Num() {
         return reply_Num;
@@ -86,5 +82,11 @@ public class Reply_VO {
     }
     public void setPost_Num(int post_Num) {
         this.post_Num = post_Num;
+    }
+    public String getReply_Content_Aft() {
+        return reply_Content_Aft;
+    }
+    public void setReply_Content_Aft(String reply_Content_Aft) {
+        this.reply_Content_Aft = reply_Content_Aft;
     }
 }

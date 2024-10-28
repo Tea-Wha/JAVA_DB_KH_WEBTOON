@@ -17,6 +17,8 @@ public class Reply_DAO {
     ResultSet rs = null;
     Scanner scanner = null;
     FileInputStream fileInputStream = null;
+    private int reply_Num;
+    private int member_Num;
 
     // Scanner 기능이 필요할 때 켜짐(?)
     public void Reply_DAO_Scanner(){
@@ -58,7 +60,7 @@ public class Reply_DAO {
     // Comment Menu 따로 구현 -> 클래스 안에 포함?
     // SELECT(조회) 기능 구현
     // 댓글 테이블 확인 기능
-    public List<Reply_VO> replySelect(){
+    public List<Reply_VO> reply_Select(){
         List<Reply_VO> list = new ArrayList<>();
         try{
             conn = Common.getConnection(); // 오라클 DB 연결
@@ -106,7 +108,7 @@ public class Reply_DAO {
     }
     // UPDATE 기능 구현 -> 댓글 작성자 전용 기능
     // 댓글 본문 수정 기능 / 날짜 업데이트 기능(?) X
-    public boolean replyUpdate(Reply_VO vo){
+    public boolean reply_Update(Reply_VO vo){
         String sql = "UPDATE 댓글 SET 본문 = ?, 댓글번호 = ? WHERE 댓글번호 = ?";
         try{
             conn = Common.getConnection();
@@ -127,35 +129,33 @@ public class Reply_DAO {
         }
     }
     // UPDATE Input 데이터 받는 기능 -> 댓글 작성자 전용 기능
-//    public static Comment_VO comment_Update_Input(){
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.print("변경할 댓글 번호 입력 : ");
-//        int comment_Num = scanner.nextInt();
-//        // 여기에 -> 권한 확인 코드
-//        System.out.print("변경 후 댓글 본문 입력 : ");
-//        String comment_Content_after = scanner.next();
-//         Comment_VO vo = new Comment_VO();
-//        return vo;
-//    }
+    public static Reply_VO replyUpdate_Input(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("변경할 댓글 번호 입력 : ");
+        int reply_Num = scanner.nextInt();
+        // 여기에 -> 권한 확인 코드
+        scanner.nextLine();
+        System.out.print("변경 후 댓글 본문 입력 : ");
+        String reply_Content_after = scanner.nextLine();
+        Reply_VO vo = new Reply_VO(reply_Num, reply_Content_after);
+        return vo;
+    }
     // INSERT 기능 구현 -> 회원 전용 기능
     // 댓글 추가 기능
     public boolean replyInsert(Reply_VO vo){
-        String sql = "INSERT INTO 댓글 (본문, 작성일, 공감수, 비공감수, 회원번호, 게시글번호) VALUES (?,SYSDATE,?,?,?,?)";
+        String sql = "INSERT INTO 댓글 (본문, 작성일, 회원번호, 게시글번호) VALUES (?,SYSDATE,?,?)";
         try{
             conn = Common.getConnection();
-            Date currentDate = new Date(System.currentTimeMillis());
             psmt = conn.prepareStatement(sql);
             psmt.setString(1,vo.getReply_Content());
-            psmt.setInt(2,vo.getReply_Like());
-            psmt.setInt(3,vo.getReply_Dislike());
-            psmt.setInt(4,vo.getMember_Num());
-            psmt.setInt(5,vo.getPost_Num());
+            psmt.setInt(2,vo.getMember_Num());
+            psmt.setInt(3,vo.getPost_Num());
             psmt.executeUpdate();
             return true;
         }
         catch (Exception e){
             System.out.println(e);
-            System.out.println("댓글 INSERT 실패");
+            System.out.println("댓글 작성 실패");
             return false;
         }
         finally {
@@ -164,7 +164,7 @@ public class Reply_DAO {
         }
     }
         // INSERT Input 데이터 받는 기능 -> ADMIN 전용 기능
-        public static Reply_VO reply_Insert_Input(){
+        public static Reply_VO replyInsert_Input(){
             Scanner scanner = new Scanner(System.in);
             System.out.println("댓글 입력");
             System.out.print("댓글 내용 : ");
@@ -175,6 +175,67 @@ public class Reply_DAO {
             int post_Num = scanner.nextInt();
             Reply_VO vo = new Reply_VO(comment_Content, member_Num, post_Num);
             return vo;
+    }
+    public boolean reply_Delete() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("삭제 댓글 번호 입력 : ");
+        int reply_Num = scanner.nextInt();
+        System.out.print("회원번호 입력 : ");
+        int member_Num = scanner.nextInt();
+        if (reply_Check(reply_Num, member_Num)) {
+            System.out.print("댓글을 삭제하시겠습니까? [1]예 [2]아니오 : ");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    String sql = "DELETE FROM 댓글 WHERE 댓글번호 = ?";
+                    try {
+                        conn = Common.getConnection();
+                        psmt = conn.prepareStatement(sql);
+                        psmt.setInt(1, reply_Num);
+                        psmt.executeUpdate();
+                        return true;
+                    } catch (Exception e) {
+                        System.out.println("댓글 삭제 실패");
+                        return false;
+                    } finally {
+                        Common.close(psmt);
+                        Common.close(conn);
+                    }
+                case 2:
+                    System.out.print("메뉴로 돌아갑니다.");
+                    return false;
+                default:
+                    System.out.print("입력이 잘못되었습니다. 메뉴로 돌아갑니다.");
+                    return false;
+            }
+        }
+        else return false;
+    }
+    public boolean reply_Check(int reply_Num, int member_Num){
+        this.reply_Num = reply_Num;
+        this.member_Num = member_Num;
+        boolean check = false;
+        String sql = "SELECT COUNT(*) FROM 댓글 WHERE 댓글번호 = ? AND 회원번호 = ?";
+        try{
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1, reply_Num);
+            psmt.setInt(2, member_Num);
+            rs = psmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                check = count > 0;
+            }
+            return check;
+        }
+        catch (Exception e){
+            System.out.print("입력된 정보가 일치하지 않습니다.");
+            return false;
+        }
+        finally {
+            Common.close(psmt);
+            Common.close(conn);
+        }
     }
 }
 
