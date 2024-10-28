@@ -50,6 +50,27 @@ public class Platform_DAO {
             Common.close(stmt);
         }
     }
+    // 플랫폼 기본값 입력 기능 구현
+    public void platformDefault_Value(){
+        try{
+            conn = Common.getConnection();
+            stmt = null;
+            String insertTableSQL1 = "INSERT INTO 플랫폼 (플랫폼번호, 플랫폼이름) VALUES (0, '네이버')";
+            String insertTableSQL2 = "INSERT INTO 플랫폼 (플랫폼번호, 플랫폼이름) VALUES (1, '카카오')";
+            stmt = conn.createStatement();
+            stmt.executeUpdate(insertTableSQL1);
+            stmt.executeUpdate(insertTableSQL2);
+            System.out.println("값 입력 성공");
+        }
+        catch (Exception e){
+            System.out.println("값 입력 실패");
+        }
+        finally{
+            Common.close(conn);
+            Common.close(stmt);
+        }
+    }
+
     // SELECT(조회) 기능 구현
     // 플랫폼 확인 기능
     public List<Platform_VO> platform_Select(){

@@ -50,6 +50,27 @@ public class Member_Type_DAO {
             Common.close(stmt);
         }
     }
+    // 회원종류 기본값 입력 기능 구현
+    public void memberTypeDefault_Value(){
+        try{
+            conn = Common.getConnection();
+            stmt = null;
+            String insertTableSQL1 = "INSERT INTO 회원종류 (회원종류번호, 회원종류이름) VALUES (0, 'ADMIN')";
+            String insertTableSQL2 = "INSERT INTO 회원종류 (회원종류번호, 회원종류이름) VALUES (1, 'MEMBER')";
+            stmt = conn.createStatement();
+            stmt.executeUpdate(insertTableSQL1);
+            stmt.executeUpdate(insertTableSQL2);
+            System.out.println("값 입력 성공");
+        }
+        catch (Exception e){
+            System.out.println("값 입력 실패");
+        }
+        finally{
+            Common.close(conn);
+            Common.close(stmt);
+        }
+    }
+
     // SELECT(조회) 기능 구현
     // 회원 종류 확인 기능
     public List<Member_Type_VO> memberTypeSelect(){

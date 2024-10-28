@@ -54,6 +54,34 @@ public class Genre_DAO {
             Common.close(stmt);
         }
     }
+    // 장르 기본값 입력 기능 구현
+    public void genreDefault_Value(){
+        try{
+            conn = Common.getConnection();
+            stmt = null;
+            String insertTableSQL1 = "INSERT INTO 장르 (장르번호, 장르이름) VALUES (1, '드라마')";
+            String insertTableSQL2 = "INSERT INTO 장르 (장르번호, 장르이름) VALUES (2, '로맨스')";
+            String insertTableSQL3 = "INSERT INTO 장르 (장르번호, 장르이름) VALUES (3, '무협')";
+            String insertTableSQL4 = "INSERT INTO 장르 (장르번호, 장르이름) VALUES (4, '액션')";
+            String insertTableSQL5 = "INSERT INTO 장르 (장르번호, 장르이름) VALUES (5, '판타지')";
+            String insertTableSQL6 = "INSERT INTO 장르 (장르번호, 장르이름) VALUES (6, '기타')";
+            stmt = conn.createStatement();
+            stmt.executeUpdate(insertTableSQL1);
+            stmt.executeUpdate(insertTableSQL2);
+            stmt.executeUpdate(insertTableSQL3);
+            stmt.executeUpdate(insertTableSQL4);
+            stmt.executeUpdate(insertTableSQL5);
+            stmt.executeUpdate(insertTableSQL6);
+            System.out.println("값 입력 성공");
+        }
+        catch (Exception e){
+            System.out.println("값 입력 실패");
+        }
+        finally{
+            Common.close(conn);
+            Common.close(stmt);
+        }
+    }
     // SELECT(조회) 기능 구현
     // 장르 확인 기능
     public List<Genre_VO> genre_Select(){

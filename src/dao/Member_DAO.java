@@ -125,7 +125,7 @@ public class Member_DAO {
         }
         catch (Exception e){
             System.out.println(e);
-            System.out.println("회원 INSERT 실패");
+            System.out.println("회원 가입 실패");
             return false;
         }
         finally {

@@ -48,6 +48,26 @@ public class Board_DAO {
             Common.close(stmt);
         }
     }
+    // 게시판 기본값 입력 기능 구현
+    public void boardDefault_Value(){
+        try{
+            conn = Common.getConnection();
+            stmt = null;
+            String insertTableSQL1 = "INSERT INTO 게시판유형 (게시판유형번호, 게시판이름) VALUES (0, '공지')";
+            String insertTableSQL2 = "INSERT INTO 게시판유형 (게시판유형번호, 게시판이름) VALUES (1, '자유')";
+            stmt = conn.createStatement();
+            stmt.executeUpdate(insertTableSQL1);
+            stmt.executeUpdate(insertTableSQL2);
+            System.out.println("값 입력 성공");
+        }
+        catch (Exception e){
+            System.out.println("값 입력 실패");
+        }
+        finally{
+            Common.close(conn);
+            Common.close(stmt);
+        }
+    }
     // SELECT(조회) 기능 구현
     // 게시판 유형 확인 기능
     public List<Board_VO> boardSelect(){
