@@ -38,6 +38,7 @@ public class Free_Post_Controller {
                 System.out.print("확인할 자유 게시글 번호 입력 : ");
                 free_Post_Num_Select = scanner.nextInt();
                 if (pdao.post_Exist(free_Post_Num_Select, boardType)) {
+                    pdao.post_Visit(free_Post_Num_Select);
                     isFreeReply = true;
                     while (isFreeReply) {
                         Free_Reply_Controller.free_Reply_None_Member_Start();
@@ -87,6 +88,7 @@ public class Free_Post_Controller {
                 System.out.print("확인할 자유 게시글 번호 입력 : ");
                 free_Post_Num_Select = scanner.nextInt();
                 if (pdao.post_Exist(free_Post_Num_Select, boardType)) {
+                    pdao.post_Visit(free_Post_Num_Select);
                     isFreeReply = true;
                     while (isFreeReply) {
                         Free_Reply_Controller.free_Reply_Member_Start();

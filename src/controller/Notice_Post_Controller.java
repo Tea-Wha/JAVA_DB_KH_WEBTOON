@@ -39,6 +39,7 @@ public class Notice_Post_Controller {
                 System.out.print("확인할 공지 게시글 번호 입력 : ");
                 notice_Post_Num_Select = scanner.nextInt();
                 if (pdao.post_Exist(notice_Post_Num_Select, boardType)) {
+                    pdao.post_Visit(notice_Post_Num_Select);
                     isNoticeReply = true;
                     while (isNoticeReply) {
                         Notice_Reply_Controller.notice_Reply_None_Member_Start();
@@ -88,6 +89,7 @@ public class Notice_Post_Controller {
                 System.out.print("확인할 공지 게시글 번호 입력 : ");
                 notice_Post_Num_Select = scanner.nextInt();
                 if (pdao.post_Exist(notice_Post_Num_Select, boardType)) {
+                    pdao.post_Visit(notice_Post_Num_Select);
                     isNoticeReply = true;
                     while (isNoticeReply) {
                         Notice_Reply_Controller.notice_Reply_Member_Start();

@@ -19,6 +19,7 @@ public class Free_Reply_Controller {
     FileInputStream fileInputStream = null;
     private static int free_Post_Number = -1;
     private static int user_Number = -1;
+    private static int reply_Number = -1;
 
     public static void free_Reply_None_Member_Start(){
         free_Post_Number = Free_Post_Controller.getFree_Post_Num_Select();
@@ -28,8 +29,8 @@ public class Free_Reply_Controller {
         Reply_DAO rdao = new Reply_DAO();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("====== KH WEBTOON 자유 게시글(비회원) =======");
-        System.out.println("[1]게시글 조회 [2]게시글 수정 [3]게시글 삭제 [4]댓글 보기 [5]댓글 작성 [6]댓글 공감 [7]댓글 비공감 [8]뒤로 가기 [9]메인페이지 이동 [10]종료");
+        System.out.printf("====== KH WEBTOON 자유 게시글 [%d]번 (비회원) =======\n",free_Post_Number);
+        System.out.println("[1]게시글 조회 [2]게시글 수정 [3]게시글 삭제 [4]댓글 보기 [5]댓글 작성 [6]댓글 수정 [7]댓글 삭제 [8]댓글 공감 [9]댓글 비공감 [10]뒤로 가기 [11]메인페이지 이동 [12]종료");
         System.out.print("이동 메뉴 선택 : ");
         int choice = scanner.nextInt();
         switch (choice){
@@ -38,7 +39,7 @@ public class Free_Reply_Controller {
                 rdao.replySelect_Result(rdao.reply_Select(free_Post_Number));
                 break;
             case 2:
-                System.out.println("수정 권한이 없습니다.");
+                System.out.println("게시글 수정 권한이 없습니다.");
                 break;
             case 3:
                 System.out.println("삭제 권한이 없습니다.");
@@ -49,18 +50,24 @@ public class Free_Reply_Controller {
             case 5:
                 System.out.println("작성 권한이 없습니다. 로그인 해주세요.");
                 break;
-            case 6, 7:
+            case 6:
+                System.out.println("댓글 수정 권한이 없습니다.");
+                break;
+            case 7:
+                System.out.println("댓글 삭제 권한이 없습니다.");
+                break;
+            case 8, 9:
                 System.out.println("권한이 없습니다. 로그인 해주세요.");
                 break;
-            case 8: // 뒤로 가기
+            case 10: // 뒤로 가기
                 Free_Post_Controller.setIsFreeReply(false);
                 break;
-            case 9:
+            case 11:
                 Free_Post_Controller.setIsFreeReply(false);
                 Post_Controller.setIsFreePost(false);
                 controller.setPostIn(false);
                 break;
-            case 10:
+            case 12:
                 System.exit(0);
                 break;
         }
@@ -74,8 +81,8 @@ public class Free_Reply_Controller {
         Scanner scanner = new Scanner(System.in);
         boolean isSuccess;
 
-        System.out.println("====== KH WEBTOON 자유 게시글(회원) =======");
-        System.out.println("[1]게시글 조회 [2]게시글 수정 [3]게시글 삭제 [4]댓글 보기 [5]댓글 작성 [6]댓글 공감 [7]댓글 비공감 [8]뒤로 가기 [9]메인페이지 이동 [10]종료");
+        System.out.printf("====== KH WEBTOON 자유 게시글 [%d]번 (회원) =======\n",free_Post_Number);
+        System.out.println("[1]게시글 조회 [2]게시글 수정 [3]게시글 삭제 [4]댓글 보기 [5]댓글 작성 [6]댓글 수정 [7]댓글 삭제 [8]댓글 공감 [9]댓글 비공감 [10]뒤로 가기 [11]메인페이지 이동 [12]종료");
         System.out.print("이동 메뉴 선택 : ");
         int choice = scanner.nextInt();
         switch (choice){
@@ -90,24 +97,43 @@ public class Free_Reply_Controller {
 
                 break;
             case 4:
-
+                rdao.replySelect_Result(rdao.reply_Select(free_Post_Number));
                 break;
             case 5:
-
+                isSuccess = rdao.replyInsert(rdao.replyInsert_Input_Auto(user_Number, free_Post_Number));
+                if (isSuccess) System.out.println("댓글 작성 성공");
+                else System.out.println("댓글 작성 실패");
                 break;
             case 6:
+                System.out.print("수정할 댓글 번호 입력 : ");
+                reply_Number = scanner.nextInt();
+                if (rdao.reply_Check(reply_Number,user_Number)){
+                    isSuccess = rdao.reply_Update(rdao.replyUpdate_Input_Auto(reply_Number));
+                    if (isSuccess) System.out.println("댓글 수정 성공");
+                    else System.out.println("댓글 수정 실패");
+                }
+                else System.out.println("수정 권한이 없습니다.");
                 break;
             case 7:
+                System.out.print("삭제할 댓글 번호 입력 : ");
+                reply_Number = scanner.nextInt();
+                isSuccess = rdao.reply_Delete_Auto(reply_Number,user_Number);
+                if (isSuccess) System.out.println("댓글 삭제 성공");
+                else System.out.println("댓글 삭제 실패");
                 break;
             case 8:
-                Free_Post_Controller.setIsFreeReply(false);
                 break;
             case 9:
+                break;
+            case 10:
+                Free_Post_Controller.setIsFreeReply(false);
+                break;
+            case 11:
                 Free_Post_Controller.setIsFreeReply(false);
                 Post_Controller.setIsFreePost(false);
                 controller.setPostIn(false);
                 break;
-            case 10:
+            case 12:
                 System.exit(0);
                 break;
         }

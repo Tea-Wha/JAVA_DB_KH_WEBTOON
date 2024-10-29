@@ -218,7 +218,6 @@ public class Post_DAO {
         }
         return list; // 리스트 반환
     }
-
     public void postSelect_Result(List<Post_VO> list){ // 단일 게시글 전체 조회 (본문 포함)
         System.out.println("---------------------------------");
         System.out.println("            게시글 정보            ");
@@ -419,26 +418,17 @@ public class Post_DAO {
             Common.close(conn);
         }
     }
-    public boolean post_Visit(int post_Num){
+    public void post_Visit(int post_Num){
         this.post_Num = post_Num;
-        this.board_Num = board_Num;
-        boolean check = false;
-        String sql = "SELECT COUNT(*) FROM 게시글 WHERE 게시글번호 = ? AND 게시판유형번호 = ?";
+        String sql = "UPDATE 게시글 SET 조회수 = 조회수 + 1 WHERE 게시글번호 = ?";
         try{
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);
             psmt.setInt(1, post_Num);
-            psmt.setInt(2, board_Num);
-            rs = psmt.executeQuery();
-            if (rs.next()) {
-                int count = rs.getInt(1);
-                check = count > 0;
-            }
-            return check;
+            psmt.executeUpdate();
         }
         catch (Exception e){
-            System.out.print("입력된 정보가 일치하지 않습니다.");
-            return false;
+            System.out.print("오류 발생");
         }
         finally {
             Common.close(psmt);

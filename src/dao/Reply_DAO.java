@@ -20,6 +20,8 @@ public class Reply_DAO {
     private int reply_Num;
     private int member_Num;
     private int post_Number;
+    private int member_Number;
+    private int reply_Number;
 
     // Scanner 기능이 필요할 때 켜짐(?)
     public void Reply_DAO_Scanner(){
@@ -130,9 +132,9 @@ public class Reply_DAO {
             System.out.print("댓글 번호 : "+ e.getReply_Num()+" ");
             System.out.print("댓글 내용 : "+e.getReply_Content()+" ");
             System.out.print("댓글 작성일 : "+e.getReply_Pub_Date()+" ");
-            System.out.print("공감수 : "+e.getReply_Like());
-            System.out.print("비공감수 : "+e.getReply_Dislike());
-            System.out.print("회원번호 : "+e.getMember_Num());
+            System.out.print("공감수 : "+e.getReply_Like()+" ");
+            System.out.print("비공감수 : "+e.getReply_Dislike()+" ");
+            System.out.print("회원번호 : "+e.getMember_Num()+" ");
             System.out.print("게시글번호 : "+e.getPost_Num());
             System.out.println();
         }
@@ -172,6 +174,15 @@ public class Reply_DAO {
         Reply_VO vo = new Reply_VO(reply_Num, reply_Content_after);
         return vo;
     }
+    // UPDATE Input 데이터 받는 기능 -> 댓글 작성자 전용 기능
+    public Reply_VO replyUpdate_Input_Auto(int reply_Number){
+        this.reply_Number = reply_Number;
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("변경 후 댓글 본문 입력 : ");
+        String reply_Content_after = scanner.nextLine();
+        Reply_VO vo = new Reply_VO(reply_Number, reply_Content_after);
+        return vo;
+    }
     // INSERT 기능 구현 -> 회원 전용 기능
     // 댓글 추가 기능
     public boolean replyInsert(Reply_VO vo){
@@ -195,25 +206,70 @@ public class Reply_DAO {
             Common.close(conn);
         }
     }
-        // INSERT Input 데이터 받는 기능 -> ADMIN 전용 기능
-        public static Reply_VO replyInsert_Input(){
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("댓글 입력");
-            System.out.print("댓글 내용 : ");
-            String comment_Content = scanner.nextLine();
-            System.out.print("회원 번호 : ");
-            int member_Num = scanner.nextInt();
-            System.out.print("게시글 번호 : ");
-            int post_Num = scanner.nextInt();
-            Reply_VO vo = new Reply_VO(comment_Content, member_Num, post_Num);
-            return vo;
+    // INSERT Input 데이터 받는 기능 -> ADMIN 전용 기능
+    public static Reply_VO replyInsert_Input(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("댓글 입력");
+        System.out.print("댓글 내용 : ");
+        String comment_Content = scanner.nextLine();
+        System.out.print("회원 번호 : ");
+        int member_Num = scanner.nextInt();
+        System.out.print("게시글 번호 : ");
+        int post_Num = scanner.nextInt();
+        Reply_VO vo = new Reply_VO(comment_Content, member_Num, post_Num);
+        return vo;
     }
+    // INSERT Input 데이터 받는 기능 -> ADMIN 전용 기능
+    public Reply_VO replyInsert_Input_Auto(int member_Number, int post_Number){
+        this.member_Number = member_Number;
+        this.post_Number = post_Number;
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("댓글 입력");
+        System.out.print("댓글 내용 : ");
+        String comment_Content = scanner.nextLine();
+        Reply_VO vo = new Reply_VO(comment_Content, member_Number, post_Number);
+        return vo;
+    }
+
     public boolean reply_Delete() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("삭제 댓글 번호 입력 : ");
         int reply_Num = scanner.nextInt();
         System.out.print("회원번호 입력 : ");
         int member_Num = scanner.nextInt();
+        if (reply_Check(reply_Num, member_Num)) {
+            System.out.print("댓글을 삭제하시겠습니까? [1]예 [2]아니오 : ");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    String sql = "DELETE FROM 댓글 WHERE 댓글번호 = ?";
+                    try {
+                        conn = Common.getConnection();
+                        psmt = conn.prepareStatement(sql);
+                        psmt.setInt(1, reply_Num);
+                        psmt.executeUpdate();
+                        return true;
+                    } catch (Exception e) {
+                        System.out.println("댓글 삭제 실패");
+                        return false;
+                    } finally {
+                        Common.close(psmt);
+                        Common.close(conn);
+                    }
+                case 2:
+                    System.out.print("메뉴로 돌아갑니다.");
+                    return false;
+                default:
+                    System.out.print("입력이 잘못되었습니다. 메뉴로 돌아갑니다.");
+                    return false;
+            }
+        }
+        else return false;
+    }
+    public boolean reply_Delete_Auto(int reply_Num, int member_Num) {
+        this.reply_Num = reply_Num;
+        this.member_Num = member_Num;
+        Scanner scanner = new Scanner(System.in);
         if (reply_Check(reply_Num, member_Num)) {
             System.out.print("댓글을 삭제하시겠습니까? [1]예 [2]아니오 : ");
             int choice = scanner.nextInt();
