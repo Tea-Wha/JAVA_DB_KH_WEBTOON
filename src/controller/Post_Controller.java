@@ -57,12 +57,13 @@ public class Post_Controller {
                 }
                 break;
             case 3:
-                pdao.postSelect_Result(pdao.post_Select());
+                pdao.postSelect_Result(pdao.all_Post_Select());
                 break;
             case 4:
                 System.out.print("게시글 제목 검색 : ");
-                post_Search = scanner.next();
-                pdao.postSelect_Result_Array(pdao.post_Select_Search(post_Search));
+                scanner.nextLine();
+                post_Search = scanner.nextLine();
+                pdao.postSelect_Result_Array(pdao.all_Post_Select_Search(post_Search));
                 break;
             case 5:
                 controller.setPostIn(false);
@@ -108,9 +109,13 @@ public class Post_Controller {
                 }
                 break;
             case 3:
-                pdao.postSelect_Result(pdao.post_Select());
+                pdao.postSelect_Result(pdao.all_Post_Select());
                 break;
             case 4:
+                System.out.print("게시글 제목 검색 : ");
+                scanner.nextLine();
+                post_Search = scanner.nextLine();
+                pdao.postSelect_Result_Array(pdao.all_Post_Select_Search(post_Search));
                 break;
             case 5:
                 controller.setPostIn(false);

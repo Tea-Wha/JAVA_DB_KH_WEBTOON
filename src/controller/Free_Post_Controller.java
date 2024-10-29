@@ -19,6 +19,7 @@ public class Free_Post_Controller {
     private static boolean isFreeReply = false;
     private static int boardType = 1; // 자유 게시판
     private static String free_Post_Search;
+    private static int free_Post_Num_Select = -1;
 
     public static void free_Post_None_Member_Start(){
         Top_Controller controller = new Top_Controller();
@@ -31,21 +32,27 @@ public class Free_Post_Controller {
         int choice = scanner.nextInt();
         switch (choice){
             case 1:
-                pdao.postSelect_Result_Array(pdao.free_Post_Select());
+                pdao.postSelect_Result_Array(pdao.post_Select(boardType));
                 break;
             case 2:
-                System.out.println("게시글 번호 선택 : ");
-                isFreeReply = true;
-                while (isFreeReply){
-                    Free_Reply_Controller.free_Reply_None_Member_Start();
+                System.out.print("확인할 자유 게시글 번호 입력 : ");
+                free_Post_Num_Select = scanner.nextInt();
+                if (pdao.post_Exist(free_Post_Num_Select, boardType)) {
+                    isFreeReply = true;
+                    while (isFreeReply) {
+                        Free_Reply_Controller.free_Reply_None_Member_Start();
+                    }
                 }
+                else System.out.println("해당 게시글이 존재하지 않습니다.");
                 break;
             case 3:
                 System.out.println("작성 권한이 없습니다. 로그인 해주세요.");
                 break;
             case 4:
-                System.out.print("게시글 제목 검색 : ");
+                System.out.print("자유 게시글 제목 검색 : ");
+                scanner.nextLine();
                 free_Post_Search = scanner.nextLine();
+                pdao.postSelect_Result_Array(pdao.post_Select_Search(boardType, free_Post_Search));
                 break;
             case 5:
                 Post_Controller.setIsFreePost(false);
@@ -74,14 +81,18 @@ public class Free_Post_Controller {
         int choice = scanner.nextInt();
         switch (choice){
             case 1:
-                pdao.postSelect_Result_Array(pdao.free_Post_Select());
+                pdao.postSelect_Result_Array(pdao.post_Select(boardType));
                 break;
             case 2:
-                System.out.print("자유 게시글 선택 : ");
-                isFreeReply = true;
-                while (isFreeReply){
-                    Free_Reply_Controller.free_Reply_Member_Start();
+                System.out.print("확인할 자유 게시글 번호 입력 : ");
+                free_Post_Num_Select = scanner.nextInt();
+                if (pdao.post_Exist(free_Post_Num_Select, boardType)) {
+                    isFreeReply = true;
+                    while (isFreeReply) {
+                        Free_Reply_Controller.free_Reply_Member_Start();
+                    }
                 }
+                else System.out.println("해당 게시글이 존재하지 않습니다.");
                 break;
             case 3:
                 isSuccess = pdao.post_Insert(pdao.postInsert_Input_Auto(member_Num,boardType));
@@ -89,6 +100,10 @@ public class Free_Post_Controller {
                 else System.out.println("자유 게시글 작성 실패");
                 break;
             case 4:
+                System.out.print("자유 게시글 제목 검색 : ");
+                scanner.nextLine();
+                free_Post_Search = scanner.nextLine();
+                pdao.postSelect_Result_Array(pdao.post_Select_Search(boardType,free_Post_Search));
                 break;
             case 5:
                 Post_Controller.setIsFreePost(false);
@@ -107,5 +122,11 @@ public class Free_Post_Controller {
     }
     public static void setIsFreeReply(boolean isFreeReply) {
         Free_Post_Controller.isFreeReply = isFreeReply;
+    }
+    public static int getFree_Post_Num_Select() {
+        return free_Post_Num_Select;
+    }
+    public static void setFree_Post_Num_Select(int free_Post_Num_Select) {
+        Free_Post_Controller.free_Post_Num_Select = free_Post_Num_Select;
     }
 }

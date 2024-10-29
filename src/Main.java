@@ -64,7 +64,7 @@ public class Main {
             int choice = scanner.nextInt();
             switch (choice){
                 case 1:
-                    dao.replySelect_Result(dao.reply_Select());
+                    dao.replySelect_Result(dao.reply_Select(1));
                     break;
                 case 2:
                     isSuccess = dao.replyInsert(Reply_DAO.replyInsert_Input());
@@ -258,7 +258,7 @@ public class Main {
             int choice = scanner.nextInt();
             switch (choice){
                 case 1:
-                    dao.postSelect_Result(dao.post_Select());
+                    dao.postSelect_Result(dao.post_Select(1));
                     break;
                 case 2:
                     isSuccess = dao.post_Insert(Post_DAO.postInsert_Input());

@@ -19,6 +19,7 @@ public class Reply_DAO {
     FileInputStream fileInputStream = null;
     private int reply_Num;
     private int member_Num;
+    private int post_Number;
 
     // Scanner 기능이 필요할 때 켜짐(?)
     public void Reply_DAO_Scanner(){
@@ -60,13 +61,44 @@ public class Reply_DAO {
     // Comment Menu 따로 구현 -> 클래스 안에 포함?
     // SELECT(조회) 기능 구현
     // 댓글 테이블 확인 기능
-    public List<Reply_VO> reply_Select(){
+    public List<Reply_VO> all_Reply_Select(){
         List<Reply_VO> list = new ArrayList<>();
         try{
             conn = Common.getConnection(); // 오라클 DB 연결
             stmt = conn.createStatement(); // statement 생성
             String query = "SELECT * FROM 댓글 ORDER BY 작성일"; // 댓글 테이블 쿼리문 구성 (작성일 정렬)
             rs = stmt.executeQuery(query); // 쿼리문 실행
+            while (rs.next()){
+                int reply_Num = rs.getInt("댓글번호"); // 댓글번호 열 데이터 가져오기
+                String reply_Content = rs.getString("본문"); // 본문 열 데이터 가져오기
+                Date reply_Pub_Date = rs.getDate("작성일"); // 작성일 열 데이터 가져오기
+                int reply_Like = rs.getInt("공감수"); // 공감수 열 데이터 가져오기
+                int reply_Dislike = rs.getInt("비공감수"); // 비공감수 열 데이터 가져오기
+                int member_Num = rs.getInt("회원번호"); // 회원번호 열 데이터 가져오기
+                int post_Num = rs.getInt("게시글번호"); // 게시글번호 열 데이터 가져오기
+                Reply_VO vo = new Reply_VO(reply_Num,reply_Content,reply_Pub_Date,reply_Like,reply_Dislike,member_Num,post_Num);
+                list.add(vo); // 리스트 저장
+            }
+        }
+        catch (Exception e){
+            System.out.println("댓글 조회 실패");
+        }
+        finally{
+            Common.close(rs);
+            Common.close(stmt);
+            Common.close(conn);
+        }
+        return list; // 리스트 반환
+    }
+    public List<Reply_VO> reply_Select(int post_Number){
+        this.post_Number = post_Number;
+        List<Reply_VO> list = new ArrayList<>();
+        try{
+            String query = "SELECT * FROM 댓글 WHERE 게시글번호 = ? ORDER BY 작성일"; // 댓글 테이블 쿼리문 구성 (작성일 정렬)
+            conn = Common.getConnection(); // 오라클 DB 연결
+            psmt = conn.prepareStatement(query);// statement 생성
+            psmt.setInt(1,post_Number);
+            rs = psmt.executeQuery();// 쿼리문 실행
             while (rs.next()){
                 int reply_Num = rs.getInt("댓글번호"); // 댓글번호 열 데이터 가져오기
                 String reply_Content = rs.getString("본문"); // 본문 열 데이터 가져오기

@@ -26,6 +26,8 @@ public class Post_DAO {
     private String free_Post_Search;
     private String notice_Post_Search;
     private String post_Search;
+    private int post_Number;
+    private int board_Number;
 
     // Scanner 기능이 필요할 때 켜짐(?)
     public void Post_DAO_Scanner(){
@@ -61,7 +63,7 @@ public class Post_DAO {
     }
     // SELECT(전체 조회) 기능 구현
     // 게시글 확인 기능
-    public List<Post_VO> post_Select(){
+    public List<Post_VO> all_Post_Select(){
         List<Post_VO> list = new ArrayList<>();
         try{
             conn = Common.getConnection(); // 오라클 DB 연결
@@ -90,7 +92,7 @@ public class Post_DAO {
         }
         return list; // 리스트 반환    
     }
-    public List<Post_VO> post_Select_Search(String post_Search){ // 공지 게시판 게시글 제목
+    public List<Post_VO> all_Post_Select_Search(String post_Search){ // 공지 게시판 게시글 제목
         List<Post_VO> list = new ArrayList<>();
         this.post_Search = post_Search;
         try{
@@ -121,43 +123,14 @@ public class Post_DAO {
         }
         return list; // 리스트 반환
     }
-    public List<Post_VO> notice_Post_Select(){ // 공지 게시판 게시글 제목
+    public List<Post_VO> post_Select(int board_Number){
         List<Post_VO> list = new ArrayList<>();
+        this.board_Number = board_Number;
         try{
-            conn = Common.getConnection(); // 오라클 DB 연결
-            stmt = conn.createStatement(); // statement 생성
-            String query = "SELECT * FROM 게시글 WHERE 게시판유형번호 = 0 ORDER BY 게시글번호"; // 게시글 테이블 쿼리문 구성
-            rs = stmt.executeQuery(query); // 쿼리문 실행
-            while (rs.next()){
-                int post_Num = rs.getInt("게시글번호"); // 게시글번호 열 데이터 가져오기
-                String post_Title = rs.getString("제목"); // 제목 열 데이터 가져오기
-                String post_Content = rs.getString("본문"); // 본문 열 데이터 가져오기
-                Date post_Date = rs.getDate("작성일");
-                int post_Visit = rs.getInt("조회수");
-                int member_Num = rs.getInt("회원번호");
-                int board_Num = rs.getInt("게시판유형번호");
-                Post_VO vo = new Post_VO(post_Num,post_Title,post_Content,post_Date,post_Visit,member_Num,board_Num);
-                list.add(vo); // 리스트 저장
-            }
-        }
-        catch (Exception e){
-            System.out.println("공지 게시글 조회 실패");
-        }
-        finally{
-            Common.close(rs);
-            Common.close(stmt);
-            Common.close(conn);
-        }
-        return list; // 리스트 반환
-    }
-    public List<Post_VO> notice_Post_Select_Search(String notice_Post_Search){ // 공지 게시판 게시글 제목
-        List<Post_VO> list = new ArrayList<>();
-        this.notice_Post_Search = notice_Post_Search;
-        try{
-            String query = "SELECT * FROM 게시글 WHERE 게시판유형번호 = 0 AND 제목 = ? ORDER BY 게시글번호"; // 게시글 테이블 쿼리문 구성
+            String query = "SELECT * FROM 게시글 WHERE 게시판유형번호 = ? ORDER BY 게시글번호"; // 게시글 테이블 쿼리문 구성
             conn = Common.getConnection(); // 오라클 DB 연결
             psmt = conn.prepareStatement(query);// statement 생성
-            psmt.setString(1,notice_Post_Search);
+            psmt.setInt(1,board_Number);
             rs = psmt.executeQuery(); // 쿼리문 실행
             while (rs.next()){
                 int post_Num = rs.getInt("게시글번호"); // 게시글번호 열 데이터 가져오기
@@ -172,7 +145,7 @@ public class Post_DAO {
             }
         }
         catch (Exception e){
-            System.out.println("공지 게시글 검색 실패");
+            System.out.println("게시글 조회 실패");
         }
         finally{
             Common.close(rs);
@@ -181,43 +154,14 @@ public class Post_DAO {
         }
         return list; // 리스트 반환
     }
-    public List<Post_VO> free_Post_Select(){ // 공지 게시판 게시글 제목
+    public List<Post_VO> post_Single_Select(int post_Number){
         List<Post_VO> list = new ArrayList<>();
+        this.post_Number = post_Number;
         try{
-            conn = Common.getConnection(); // 오라클 DB 연결
-            stmt = conn.createStatement(); // statement 생성
-            String query = "SELECT * FROM 게시글 WHERE 게시판유형번호 = 1 ORDER BY 게시글번호"; // 게시글 테이블 쿼리문 구성
-            rs = stmt.executeQuery(query); // 쿼리문 실행
-            while (rs.next()){
-                int post_Num = rs.getInt("게시글번호"); // 게시글번호 열 데이터 가져오기
-                String post_Title = rs.getString("제목"); // 제목 열 데이터 가져오기
-                String post_Content = rs.getString("본문"); // 본문 열 데이터 가져오기
-                Date post_Date = rs.getDate("작성일");
-                int post_Visit = rs.getInt("조회수");
-                int member_Num = rs.getInt("회원번호");
-                int board_Num = rs.getInt("게시판유형번호");
-                Post_VO vo = new Post_VO(post_Num,post_Title,post_Content,post_Date,post_Visit,member_Num,board_Num);
-                list.add(vo); // 리스트 저장
-            }
-        }
-        catch (Exception e){
-            System.out.println("공지 게시글 조회 실패");
-        }
-        finally{
-            Common.close(rs);
-            Common.close(stmt);
-            Common.close(conn);
-        }
-        return list; // 리스트 반환
-    }
-    public List<Post_VO> free_Post_Select_Search(String free_Post_Search){ // 공지 게시판 게시글 제목
-        List<Post_VO> list = new ArrayList<>();
-        this.free_Post_Search = free_Post_Search;
-        try{
-            String query = "SELECT * FROM 게시글 WHERE 게시판유형번호 = 1 AND 제목 = ? ORDER BY 게시글번호"; // 게시글 테이블 쿼리문 구성
+            String query = "SELECT * FROM 게시글 WHERE 게시글번호 = ?"; // 게시글 테이블 쿼리문 구성
             conn = Common.getConnection(); // 오라클 DB 연결
             psmt = conn.prepareStatement(query);// statement 생성
-            psmt.setString(1,free_Post_Search);
+            psmt.setInt(1,post_Number);
             rs = psmt.executeQuery(); // 쿼리문 실행
             while (rs.next()){
                 int post_Num = rs.getInt("게시글번호"); // 게시글번호 열 데이터 가져오기
@@ -232,7 +176,7 @@ public class Post_DAO {
             }
         }
         catch (Exception e){
-            System.out.println("자유 게시글 검색 실패");
+            System.out.println("게시글 조회 실패");
         }
         finally{
             Common.close(rs);
@@ -241,6 +185,40 @@ public class Post_DAO {
         }
         return list; // 리스트 반환
     }
+    public List<Post_VO> post_Select_Search(int board_Number, String post_Search){ // 게시글 제목
+        List<Post_VO> list = new ArrayList<>();
+        this.board_Number = board_Number;
+        this.post_Search = post_Search;
+        try{
+            String query = "SELECT * FROM 게시글 WHERE 게시판유형번호 = ? AND 제목 LIKE ? ORDER BY 게시글번호"; // 게시글 테이블 쿼리문 구성
+            conn = Common.getConnection(); // 오라클 DB 연결
+            psmt = conn.prepareStatement(query);// statement 생성
+            psmt.setInt(1,board_Number);
+            psmt.setString(2,"%"+post_Search+"%");
+            rs = psmt.executeQuery(); // 쿼리문 실행
+            while (rs.next()){
+                int post_Num = rs.getInt("게시글번호"); // 게시글번호 열 데이터 가져오기
+                String post_Title = rs.getString("제목"); // 제목 열 데이터 가져오기
+                String post_Content = rs.getString("본문"); // 본문 열 데이터 가져오기
+                Date post_Date = rs.getDate("작성일");
+                int post_Visit = rs.getInt("조회수");
+                int member_Num = rs.getInt("회원번호");
+                int board_Num = rs.getInt("게시판유형번호");
+                Post_VO vo = new Post_VO(post_Num,post_Title,post_Content,post_Date,post_Visit,member_Num,board_Num);
+                list.add(vo); // 리스트 저장
+            }
+        }
+        catch (Exception e){
+            System.out.println("게시글 검색 실패");
+        }
+        finally{
+            Common.close(rs);
+            Common.close(psmt);
+            Common.close(conn);
+        }
+        return list; // 리스트 반환
+    }
+
     public void postSelect_Result(List<Post_VO> list){ // 단일 게시글 전체 조회 (본문 포함)
         System.out.println("---------------------------------");
         System.out.println("            게시글 정보            ");
@@ -399,6 +377,58 @@ public class Post_DAO {
             psmt = conn.prepareStatement(sql);
             psmt.setInt(1, post_Num);
             psmt.setInt(2, member_Num);
+            rs = psmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                check = count > 0;
+            }
+            return check;
+        }
+        catch (Exception e){
+            System.out.print("입력된 정보가 일치하지 않습니다.");
+            return false;
+        }
+        finally {
+            Common.close(psmt);
+            Common.close(conn);
+        }
+    }
+    public boolean post_Exist(int post_Num, int board_Num){
+        this.post_Num = post_Num;
+        this.board_Num = board_Num;
+        boolean check = false;
+        String sql = "SELECT COUNT(*) FROM 게시글 WHERE 게시글번호 = ? AND 게시판유형번호 = ?";
+        try{
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1, post_Num);
+            psmt.setInt(2, board_Num);
+            rs = psmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                check = count > 0;
+            }
+            return check;
+        }
+        catch (Exception e){
+            System.out.print("입력된 정보가 일치하지 않습니다.");
+            return false;
+        }
+        finally {
+            Common.close(psmt);
+            Common.close(conn);
+        }
+    }
+    public boolean post_Visit(int post_Num){
+        this.post_Num = post_Num;
+        this.board_Num = board_Num;
+        boolean check = false;
+        String sql = "SELECT COUNT(*) FROM 게시글 WHERE 게시글번호 = ? AND 게시판유형번호 = ?";
+        try{
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1, post_Num);
+            psmt.setInt(2, board_Num);
             rs = psmt.executeQuery();
             if (rs.next()) {
                 int count = rs.getInt(1);

@@ -19,6 +19,8 @@ public class Notice_Post_Controller {
     FileInputStream fileInputStream = null;
     private static boolean isNoticeReply = false;
     private static int boardType = 0; // 공지 게시판
+    private static String notice_Post_Search;
+    private static int notice_Post_Num_Select = -1;
 
     public static void notice_Post_None_Member_Start(){
         Top_Controller controller = new Top_Controller();
@@ -31,18 +33,27 @@ public class Notice_Post_Controller {
         int choice = scanner.nextInt();
         switch (choice){
             case 1:
-                pdao.postSelect_Result_Array(pdao.notice_Post_Select());
+                pdao.postSelect_Result_Array(pdao.post_Select(boardType));
                 break;
             case 2:
-                isNoticeReply = true;
-                while (isNoticeReply){
-                    Notice_Reply_Controller.notice_Reply_None_Member_Start();
+                System.out.print("확인할 공지 게시글 번호 입력 : ");
+                notice_Post_Num_Select = scanner.nextInt();
+                if (pdao.post_Exist(notice_Post_Num_Select, boardType)) {
+                    isNoticeReply = true;
+                    while (isNoticeReply) {
+                        Notice_Reply_Controller.notice_Reply_None_Member_Start();
+                    }
                 }
+                else System.out.println("해당 게시글이 존재하지 않습니다.");
                 break;
             case 3:
                 System.out.println("작성 권한이 없습니다. 로그인 해주세요.");
                 break;
             case 4:
+                System.out.print("공지 게시글 제목 검색 : ");
+                scanner.nextLine();
+                notice_Post_Search = scanner.nextLine();
+                pdao.postSelect_Result_Array(pdao.post_Select_Search(boardType, notice_Post_Search));
                 break;
             case 5:
                 Post_Controller.setIsNoticePost(false);
@@ -71,13 +82,18 @@ public class Notice_Post_Controller {
         int choice = scanner.nextInt();
         switch (choice){
             case 1:
-                pdao.postSelect_Result_Array(pdao.notice_Post_Select());
+                pdao.postSelect_Result_Array(pdao.post_Select(boardType));
                 break;
             case 2:
-                isNoticeReply = true;
-                while (isNoticeReply){
-                    Notice_Reply_Controller.notice_Reply_Member_Start();
+                System.out.print("확인할 공지 게시글 번호 입력 : ");
+                notice_Post_Num_Select = scanner.nextInt();
+                if (pdao.post_Exist(notice_Post_Num_Select, boardType)) {
+                    isNoticeReply = true;
+                    while (isNoticeReply) {
+                        Notice_Reply_Controller.notice_Reply_Member_Start();
+                    }
                 }
+                else System.out.println("해당 게시글이 존재하지 않습니다.");
                 break;
             case 3:
                 isSuccess = pdao.post_Insert(pdao.postInsert_Input_Auto(member_Num,boardType));
@@ -85,6 +101,10 @@ public class Notice_Post_Controller {
                 else System.out.println("게시글 작성 실패");
                 break;
             case 4:
+                System.out.print("공지 게시글 제목 검색 : ");
+                scanner.nextLine();
+                notice_Post_Search = scanner.nextLine();
+                pdao.postSelect_Result_Array(pdao.post_Select_Search(boardType, notice_Post_Search));
                 break;
             case 5:
                 Post_Controller.setIsNoticePost(false);
@@ -103,5 +123,11 @@ public class Notice_Post_Controller {
     }
     public static void setIsNoticeReply(boolean isNoticeReply) {
         Notice_Post_Controller.isNoticeReply = isNoticeReply;
+    }
+    public static int getNotice_Post_Num_Select() {
+        return notice_Post_Num_Select;
+    }
+    public static void setNotice_Post_Num_Select(int notice_Post_Num_Select) {
+        Notice_Post_Controller.notice_Post_Num_Select = notice_Post_Num_Select;
     }
 }

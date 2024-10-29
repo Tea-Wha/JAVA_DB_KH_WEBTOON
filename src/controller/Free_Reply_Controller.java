@@ -17,10 +17,15 @@ public class Free_Reply_Controller {
     ResultSet rs = null;
     Scanner scanner = null;
     FileInputStream fileInputStream = null;
+    private static int free_Post_Number = -1;
+    private static int user_Number = -1;
 
     public static void free_Reply_None_Member_Start(){
+        free_Post_Number = Free_Post_Controller.getFree_Post_Num_Select();
+        user_Number = User_Session_Controller.getInstance().getUser_Num();
         Top_Controller controller = new Top_Controller();
         Post_DAO pdao = new Post_DAO();
+        Reply_DAO rdao = new Reply_DAO();
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("====== KH WEBTOON 자유 게시글(비회원) =======");
@@ -29,7 +34,8 @@ public class Free_Reply_Controller {
         int choice = scanner.nextInt();
         switch (choice){
             case 1:
-
+                pdao.postSelect_Result(pdao.post_Single_Select(free_Post_Number));
+                rdao.replySelect_Result(rdao.reply_Select(free_Post_Number));
                 break;
             case 2:
                 System.out.println("수정 권한이 없습니다.");
@@ -38,7 +44,7 @@ public class Free_Reply_Controller {
                 System.out.println("삭제 권한이 없습니다.");
                 break;
             case 4:
-
+                rdao.replySelect_Result(rdao.reply_Select(free_Post_Number));
                 break;
             case 5:
                 System.out.println("작성 권한이 없습니다. 로그인 해주세요.");
@@ -60,6 +66,8 @@ public class Free_Reply_Controller {
         }
     }
     public static void free_Reply_Member_Start(){
+        free_Post_Number = Free_Post_Controller.getFree_Post_Num_Select();
+        user_Number = User_Session_Controller.getInstance().getUser_Num();
         Top_Controller controller = new Top_Controller();
         Post_DAO pdao = new Post_DAO();
         Reply_DAO rdao = new Reply_DAO();
@@ -72,6 +80,8 @@ public class Free_Reply_Controller {
         int choice = scanner.nextInt();
         switch (choice){
             case 1:
+                pdao.postSelect_Result(pdao.post_Single_Select(free_Post_Number));
+                rdao.replySelect_Result(rdao.reply_Select(free_Post_Number));
                 break;
             case 2:
 
