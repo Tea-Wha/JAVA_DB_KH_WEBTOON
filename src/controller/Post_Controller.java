@@ -1,6 +1,7 @@
 package controller;
 
 import dao.Board_DAO;
+import dao.Post_DAO;
 
 import java.io.FileInputStream;
 import java.sql.Connection;
@@ -18,14 +19,16 @@ public class Post_Controller {
     FileInputStream fileInputStream = null;
     private static boolean isNoticePost = false;
     private static boolean isFreePost = false;
+    private static String post_Search;
 
     public static void post_None_Member_Start(){
         Top_Controller controller = new Top_Controller();
         Board_DAO bdao = new Board_DAO();
+        Post_DAO pdao = new Post_DAO();
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("====== KH WEBTOON 게시판 페이지(비회원) =======");
-        System.out.println("[1]게시판 조회 [2]게시판 선택 [3]뒤로 가기 [4]종료");
+        System.out.println("[1]게시판 조회 [2]게시판 선택 [3]전체 게시글 조회 [4]게시글 검색 [5]뒤로 가기 [6]종료");
         System.out.print("이동 메뉴 선택 : ");
         int choice = scanner.nextInt();
         switch (choice){
@@ -54,9 +57,17 @@ public class Post_Controller {
                 }
                 break;
             case 3:
-                controller.setPostIn(false);
+                pdao.postSelect_Result(pdao.post_Select());
                 break;
             case 4:
+                System.out.print("게시글 제목 검색 : ");
+                post_Search = scanner.next();
+                pdao.postSelect_Result_Array(pdao.post_Select_Search(post_Search));
+                break;
+            case 5:
+                controller.setPostIn(false);
+                break;
+            case 6:
                 System.exit(0);
                 break;
         }
@@ -64,10 +75,11 @@ public class Post_Controller {
     public static void post_Member_Start(){
         Top_Controller controller = new Top_Controller();
         Board_DAO bdao = new Board_DAO();
+        Post_DAO pdao = new Post_DAO();
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("====== KH WEBTOON 게시판 페이지(회원) =======");
-        System.out.println("[1]게시판 조회 [2]게시판 선택 [3]뒤로 가기 [4]종료");
+        System.out.println("[1]게시판 조회 [2]게시판 선택 [3]전체 게시글 조회 [4]게시글 검색 [5]뒤로 가기 [6]종료");
         System.out.print("이동 메뉴 선택 : ");
         int choice = scanner.nextInt();
         switch (choice){
@@ -96,9 +108,14 @@ public class Post_Controller {
                 }
                 break;
             case 3:
-                controller.setPostIn(false);
+                pdao.postSelect_Result(pdao.post_Select());
                 break;
             case 4:
+                break;
+            case 5:
+                controller.setPostIn(false);
+                break;
+            case 6:
                 System.exit(0);
                 break;
         }

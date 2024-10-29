@@ -22,6 +22,10 @@ public class Post_DAO {
     FileInputStream fileInputStream = null;
     private int post_Num;
     private int member_Num;
+    private int board_Num;
+    private String free_Post_Search;
+    private String notice_Post_Search;
+    private String post_Search;
 
     // Scanner 기능이 필요할 때 켜짐(?)
     public void Post_DAO_Scanner(){
@@ -55,14 +59,14 @@ public class Post_DAO {
             Common.close(stmt);
         }
     }
-    // SELECT(조회) 기능 구현
+    // SELECT(전체 조회) 기능 구현
     // 게시글 확인 기능
     public List<Post_VO> post_Select(){
         List<Post_VO> list = new ArrayList<>();
         try{
             conn = Common.getConnection(); // 오라클 DB 연결
             stmt = conn.createStatement(); // statement 생성
-            String query = "SELECT * FROM 게시글 ORDER BY 게시글번호"; // 게시글 테이블 쿼리문 구성
+            String query = "SELECT * FROM 게시글 ORDER BY 게시판유형번호, 게시글번호"; // 게시글 테이블 쿼리문 구성
             rs = stmt.executeQuery(query); // 쿼리문 실행
             while (rs.next()){
                 int post_Num = rs.getInt("게시글번호"); // 게시글번호 열 데이터 가져오기
@@ -86,7 +90,158 @@ public class Post_DAO {
         }
         return list; // 리스트 반환    
     }
-    public void postSelect_Result(List<Post_VO> list){
+    public List<Post_VO> post_Select_Search(String post_Search){ // 공지 게시판 게시글 제목
+        List<Post_VO> list = new ArrayList<>();
+        this.post_Search = post_Search;
+        try{
+            String query = "SELECT * FROM 게시글 WHERE 제목 LIKE ? ORDER BY 게시글번호"; // 게시글 테이블 쿼리문 구성
+            conn = Common.getConnection(); // 오라클 DB 연결
+            psmt = conn.prepareStatement(query);// statement 생성
+            psmt.setString(1,"%"+post_Search+"%");
+            rs = psmt.executeQuery(); // 쿼리문 실행
+            while (rs.next()){
+                int post_Num = rs.getInt("게시글번호"); // 게시글번호 열 데이터 가져오기
+                String post_Title = rs.getString("제목"); // 제목 열 데이터 가져오기
+                String post_Content = rs.getString("본문"); // 본문 열 데이터 가져오기
+                Date post_Date = rs.getDate("작성일");
+                int post_Visit = rs.getInt("조회수");
+                int member_Num = rs.getInt("회원번호");
+                int board_Num = rs.getInt("게시판유형번호");
+                Post_VO vo = new Post_VO(post_Num,post_Title,post_Content,post_Date,post_Visit,member_Num,board_Num);
+                list.add(vo); // 리스트 저장
+            }
+        }
+        catch (Exception e){
+            System.out.println("게시글 검색 실패");
+        }
+        finally{
+            Common.close(rs);
+            Common.close(psmt);
+            Common.close(conn);
+        }
+        return list; // 리스트 반환
+    }
+    public List<Post_VO> notice_Post_Select(){ // 공지 게시판 게시글 제목
+        List<Post_VO> list = new ArrayList<>();
+        try{
+            conn = Common.getConnection(); // 오라클 DB 연결
+            stmt = conn.createStatement(); // statement 생성
+            String query = "SELECT * FROM 게시글 WHERE 게시판유형번호 = 0 ORDER BY 게시글번호"; // 게시글 테이블 쿼리문 구성
+            rs = stmt.executeQuery(query); // 쿼리문 실행
+            while (rs.next()){
+                int post_Num = rs.getInt("게시글번호"); // 게시글번호 열 데이터 가져오기
+                String post_Title = rs.getString("제목"); // 제목 열 데이터 가져오기
+                String post_Content = rs.getString("본문"); // 본문 열 데이터 가져오기
+                Date post_Date = rs.getDate("작성일");
+                int post_Visit = rs.getInt("조회수");
+                int member_Num = rs.getInt("회원번호");
+                int board_Num = rs.getInt("게시판유형번호");
+                Post_VO vo = new Post_VO(post_Num,post_Title,post_Content,post_Date,post_Visit,member_Num,board_Num);
+                list.add(vo); // 리스트 저장
+            }
+        }
+        catch (Exception e){
+            System.out.println("공지 게시글 조회 실패");
+        }
+        finally{
+            Common.close(rs);
+            Common.close(stmt);
+            Common.close(conn);
+        }
+        return list; // 리스트 반환
+    }
+    public List<Post_VO> notice_Post_Select_Search(String notice_Post_Search){ // 공지 게시판 게시글 제목
+        List<Post_VO> list = new ArrayList<>();
+        this.notice_Post_Search = notice_Post_Search;
+        try{
+            String query = "SELECT * FROM 게시글 WHERE 게시판유형번호 = 0 AND 제목 = ? ORDER BY 게시글번호"; // 게시글 테이블 쿼리문 구성
+            conn = Common.getConnection(); // 오라클 DB 연결
+            psmt = conn.prepareStatement(query);// statement 생성
+            psmt.setString(1,notice_Post_Search);
+            rs = psmt.executeQuery(); // 쿼리문 실행
+            while (rs.next()){
+                int post_Num = rs.getInt("게시글번호"); // 게시글번호 열 데이터 가져오기
+                String post_Title = rs.getString("제목"); // 제목 열 데이터 가져오기
+                String post_Content = rs.getString("본문"); // 본문 열 데이터 가져오기
+                Date post_Date = rs.getDate("작성일");
+                int post_Visit = rs.getInt("조회수");
+                int member_Num = rs.getInt("회원번호");
+                int board_Num = rs.getInt("게시판유형번호");
+                Post_VO vo = new Post_VO(post_Num,post_Title,post_Content,post_Date,post_Visit,member_Num,board_Num);
+                list.add(vo); // 리스트 저장
+            }
+        }
+        catch (Exception e){
+            System.out.println("공지 게시글 검색 실패");
+        }
+        finally{
+            Common.close(rs);
+            Common.close(psmt);
+            Common.close(conn);
+        }
+        return list; // 리스트 반환
+    }
+    public List<Post_VO> free_Post_Select(){ // 공지 게시판 게시글 제목
+        List<Post_VO> list = new ArrayList<>();
+        try{
+            conn = Common.getConnection(); // 오라클 DB 연결
+            stmt = conn.createStatement(); // statement 생성
+            String query = "SELECT * FROM 게시글 WHERE 게시판유형번호 = 1 ORDER BY 게시글번호"; // 게시글 테이블 쿼리문 구성
+            rs = stmt.executeQuery(query); // 쿼리문 실행
+            while (rs.next()){
+                int post_Num = rs.getInt("게시글번호"); // 게시글번호 열 데이터 가져오기
+                String post_Title = rs.getString("제목"); // 제목 열 데이터 가져오기
+                String post_Content = rs.getString("본문"); // 본문 열 데이터 가져오기
+                Date post_Date = rs.getDate("작성일");
+                int post_Visit = rs.getInt("조회수");
+                int member_Num = rs.getInt("회원번호");
+                int board_Num = rs.getInt("게시판유형번호");
+                Post_VO vo = new Post_VO(post_Num,post_Title,post_Content,post_Date,post_Visit,member_Num,board_Num);
+                list.add(vo); // 리스트 저장
+            }
+        }
+        catch (Exception e){
+            System.out.println("공지 게시글 조회 실패");
+        }
+        finally{
+            Common.close(rs);
+            Common.close(stmt);
+            Common.close(conn);
+        }
+        return list; // 리스트 반환
+    }
+    public List<Post_VO> free_Post_Select_Search(String free_Post_Search){ // 공지 게시판 게시글 제목
+        List<Post_VO> list = new ArrayList<>();
+        this.free_Post_Search = free_Post_Search;
+        try{
+            String query = "SELECT * FROM 게시글 WHERE 게시판유형번호 = 1 AND 제목 = ? ORDER BY 게시글번호"; // 게시글 테이블 쿼리문 구성
+            conn = Common.getConnection(); // 오라클 DB 연결
+            psmt = conn.prepareStatement(query);// statement 생성
+            psmt.setString(1,free_Post_Search);
+            rs = psmt.executeQuery(); // 쿼리문 실행
+            while (rs.next()){
+                int post_Num = rs.getInt("게시글번호"); // 게시글번호 열 데이터 가져오기
+                String post_Title = rs.getString("제목"); // 제목 열 데이터 가져오기
+                String post_Content = rs.getString("본문"); // 본문 열 데이터 가져오기
+                Date post_Date = rs.getDate("작성일");
+                int post_Visit = rs.getInt("조회수");
+                int member_Num = rs.getInt("회원번호");
+                int board_Num = rs.getInt("게시판유형번호");
+                Post_VO vo = new Post_VO(post_Num,post_Title,post_Content,post_Date,post_Visit,member_Num,board_Num);
+                list.add(vo); // 리스트 저장
+            }
+        }
+        catch (Exception e){
+            System.out.println("자유 게시글 검색 실패");
+        }
+        finally{
+            Common.close(rs);
+            Common.close(psmt);
+            Common.close(conn);
+        }
+        return list; // 리스트 반환
+    }
+    public void postSelect_Result(List<Post_VO> list){ // 단일 게시글 전체 조회 (본문 포함)
         System.out.println("---------------------------------");
         System.out.println("            게시글 정보            ");
         System.out.println("---------------------------------");
@@ -98,6 +253,18 @@ public class Post_DAO {
             System.out.print("게시글 조회수 : "+ e.getPost_Visit()+" ");
             System.out.print("게시글 회원번호 : "+ e.getMember_Num()+" ");
             System.out.print("게시글 유형번호 : "+ e.getBoard_Num());
+            System.out.println();
+        }
+        System.out.println("---------------------------------");
+    }
+    public void postSelect_Result_Array(List<Post_VO> list){ // 게시판 게시글 전체 조회 (본문 불포함) (제목만)
+        System.out.println("---------------------------------");
+        System.out.println("            게시글 목록            ");
+        for(Post_VO e : list){
+            System.out.print("게시글 번호 : "+ e.getPost_Num()+" ");
+            System.out.print("게시글 제목 : "+e.getPost_Title()+" ");
+            System.out.print("게시글 작성일 : "+ e.getPost_Pub_Date()+" ");
+            System.out.print("게시글 조회수 : "+ e.getPost_Visit()+" ");
             System.out.println();
         }
         System.out.println("---------------------------------");
@@ -172,6 +339,18 @@ public class Post_DAO {
         int member_Num = scanner.nextInt();
         System.out.print("게시판 유형 번호 : ");
         int board_Num = scanner.nextInt();
+        Post_VO vo = new Post_VO(post_Title, post_Content, member_Num, board_Num);
+        return vo;
+    }
+    public Post_VO postInsert_Input_Auto(int member_Num, int board_Num){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("게시글 정보 입력");
+        System.out.print("게시글 제목 : ");
+        String post_Title = scanner.nextLine();
+        System.out.print("게시글 본문 내용 : ");
+        String post_Content = scanner.nextLine();
+        this.member_Num = member_Num;
+        this.board_Num = board_Num;
         Post_VO vo = new Post_VO(post_Title, post_Content, member_Num, board_Num);
         return vo;
     }
