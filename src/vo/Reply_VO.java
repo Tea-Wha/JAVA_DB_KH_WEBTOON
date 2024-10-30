@@ -41,6 +41,9 @@ public class Reply_VO {
         this.reply_Num = reply_Num;
         this.reply_Content_Aft = reply_Content_Aft;
     }
+    public Reply_VO(int reply_Num) {
+        this.reply_Num = reply_Num;
+    }
     public int getReply_Num() {
         return reply_Num;
     }

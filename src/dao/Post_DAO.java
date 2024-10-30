@@ -281,6 +281,17 @@ public class Post_DAO {
         Post_VO vo = new Post_VO(post_Num, post_Title_after,post_Content_after);
         return vo;
     }
+    // UPDATE Input 데이터 받는 기능 -> 작성자 전용 기능
+    public Post_VO postUpdate_Input_Auto(int post_Number){
+        this.post_Number = post_Number;
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("변경 후 게시글 제목 입력 : ");
+        String post_Title_after = scanner.nextLine();
+        System.out.print("변경 후 게시글 본문 입력 : ");
+        String post_Content_after = scanner.nextLine();
+        Post_VO vo = new Post_VO(post_Number, post_Title_after,post_Content_after);
+        return vo;
+    }
     // INSERT 기능 구현 -> 회원 전용 기능
     // 게시글 추가 기능
     public boolean post_Insert(Post_VO vo){
@@ -337,6 +348,39 @@ public class Post_DAO {
         int post_Num = scanner.nextInt();
         System.out.print("회원번호 입력 : ");
         int member_Num = scanner.nextInt();
+        if (post_Check(post_Num, member_Num)) {
+            System.out.print("게시글을 삭제하시겠습니까? [1]예 [2]아니오 : ");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    String sql = "DELETE FROM 게시글 WHERE 게시글번호 = ?";
+                    try {
+                        conn = Common.getConnection();
+                        psmt = conn.prepareStatement(sql);
+                        psmt.setInt(1, post_Num);
+                        psmt.executeUpdate();
+                        return true;
+                    } catch (Exception e) {
+                        System.out.println("게시글 삭제 실패");
+                        return false;
+                    } finally {
+                        Common.close(psmt);
+                        Common.close(conn);
+                    }
+                case 2:
+                    System.out.print("메뉴로 돌아갑니다.");
+                    return false;
+                default:
+                    System.out.print("입력이 잘못되었습니다. 메뉴로 돌아갑니다.");
+                    return false;
+            }
+        }
+        else return false;
+    }
+    public boolean post_Delete_Auto(int post_Num, int member_Num) {
+        this.post_Num = post_Num;
+        this.member_Num = member_Num;
+        Scanner scanner = new Scanner(System.in);
         if (post_Check(post_Num, member_Num)) {
             System.out.print("게시글을 삭제하시겠습니까? [1]예 [2]아니오 : ");
             int choice = scanner.nextInt();

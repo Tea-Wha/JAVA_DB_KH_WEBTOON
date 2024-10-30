@@ -325,5 +325,47 @@ public class Reply_DAO {
             Common.close(conn);
         }
     }
+    public void reply_Update_Like(Reply_VO vo){
+        String sql = "UPDATE 댓글 SET 공감수 = 공감수 + 1 WHERE 댓글번호 = ?";
+        try{
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1,vo.getReply_Num());
+            psmt.executeUpdate();
+        }
+        catch (Exception e){
+            System.out.println(e);
+            System.out.println("공감 누르기 실패");
+        }
+        finally {
+            Common.close(psmt);
+            Common.close(conn);
+        }
+    }
+    public boolean reply_Update_Dislike(Reply_VO vo){
+        String sql = "UPDATE 댓글 SET 비공감수 = 비공감수 + 1 WHERE 댓글번호 = ?";
+        try{
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1,vo.getReply_Num());
+            psmt.executeUpdate();
+            return true;
+        }
+        catch (Exception e){
+            System.out.println(e);
+            System.out.println("비공감 누르기 실패");
+            return false;
+        }
+        finally {
+            Common.close(psmt);
+            Common.close(conn);
+        }
+    }
+    // UPDATE Input 데이터 받는 기능 -> 회원 전용 기능
+    public Reply_VO replyUpdate_Like_Dislike_Input_Auto(int reply_Number){
+        this.reply_Number = reply_Number;
+        Reply_VO vo = new Reply_VO(reply_Number);
+        return vo;
+    }
 }
 

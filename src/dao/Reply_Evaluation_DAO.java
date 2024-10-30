@@ -3,6 +3,7 @@ package dao;
 import common.Common;
 import vo.Board_VO;
 import vo.Reply_Evaluation_VO;
+import vo.Reply_VO;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,6 +19,9 @@ public class Reply_Evaluation_DAO {
     ResultSet rs = null;
     Scanner scanner = null;
     FileInputStream fileInputStream = null;
+    private int member_Number;
+    private int reply_Number;
+    private int reply_Eval_Type;
 
     // Scanner 기능이 필요할 때 켜짐(?)
     public void Reply_Evaluation_DAO_Scanner(){
@@ -74,5 +78,57 @@ public class Reply_Evaluation_DAO {
         }
         return list; // 리스트 반환
     }
-
+    public boolean replyEval_Insert(Reply_Evaluation_VO vo){
+        String sql = "INSERT INTO 댓글평가 (회원번호, 댓글번호, 평가유형) VALUES (?,?,?)";
+        try{
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1,vo.getMember_Num());
+            psmt.setInt(2,vo.getReply_Num());
+            psmt.setInt(3,vo.getReply_Eval_Type());
+            psmt.executeUpdate();
+            return true;
+        }
+        catch (Exception e){
+            System.out.println("공감 실패");
+            return false;
+        }
+        finally {
+            Common.close(psmt);
+            Common.close(conn);
+        }
+    }
+    public Reply_Evaluation_VO replyEvalInsert_Input_Auto(int member_Number, int reply_Number, int reply_Eval_Type){
+        this.member_Number = member_Number;
+        this.reply_Number = reply_Number;
+        this.reply_Eval_Type = reply_Eval_Type;
+        Reply_Evaluation_VO vo = new Reply_Evaluation_VO(member_Number, reply_Number, reply_Eval_Type);
+        return vo;
+    }
+    public boolean replyEvaluation_Check(int member_Number, int reply_Number){
+        this.member_Number = member_Number;
+        this.reply_Number = reply_Number;
+        boolean check = false;
+        String sql = "SELECT COUNT(*) FROM 댓글평가 WHERE 회원번호 = ? AND 댓글번호 = ?";
+        try{
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1, member_Number);
+            psmt.setInt(2, reply_Number);
+            rs = psmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                check = count > 0;
+            }
+            return check;
+        }
+        catch (Exception e){
+            System.out.print("입력된 정보가 일치하지 않습니다.");
+            return false;
+        }
+        finally {
+            Common.close(psmt);
+            Common.close(conn);
+        }
+    }
 }
