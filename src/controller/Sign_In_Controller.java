@@ -14,10 +14,11 @@ public class Sign_In_Controller {
     ResultSet rs = null;
     Scanner scanner = null;
     FileInputStream fileInputStream = null;
+    private static int member_Exist;
 
     public boolean sign_In() throws SQLException {
         Scanner scanner = new Scanner(System.in);
-        String sql = "SELECT 회원번호, 아이디 FROM 회원 WHERE 아이디 = ? AND 비밀번호 = ?";
+        String sql = "SELECT 회원번호, 아이디, 탈퇴여부 FROM 회원 WHERE 아이디 = ? AND 비밀번호 = ?";
         Member_DAO dao = new Member_DAO();
         System.out.print("ID 입력 : ");
         String member_ID = scanner.next();
@@ -31,10 +32,15 @@ public class Sign_In_Controller {
                 psmt.setString(2,member_PW);
                 rs = psmt.executeQuery();
                 rs.next();
-                String user_ID = rs.getString("아이디");
-                int user_Num = rs.getInt("회원번호");
-                User_Session_Controller.getInstance().setUserInfo(user_ID, user_Num);
-                return dao.member_Check(member_ID, member_PW);
+                member_Exist = rs.getInt("탈퇴여부");
+                if (member_Exist == 0) {
+                    String user_ID = rs.getString("아이디");
+                    int user_Num = rs.getInt("회원번호");
+                    User_Session_Controller.getInstance().setUserInfo(user_ID, user_Num);
+                    return dao.member_Check(member_ID, member_PW);
+                }
+                else System.out.println("탈퇴 회원입니다.");
+                return false;
             }
             catch (SQLException e){
                 System.out.println(e);

@@ -33,7 +33,7 @@ public class Free_Reply_Controller {
         Scanner scanner = new Scanner(System.in);
 
         System.out.printf("====== KH WEBTOON 자유 게시글 [%d]번 (비회원) =======\n",free_Post_Number);
-        System.out.println("[1]게시글 조회 [2]게시글 수정 [3]게시글 삭제 [4]댓글 보기 [5]댓글 작성 [6]댓글 수정 [7]댓글 삭제 [8]댓글 공감 [9]댓글 비공감 [10]뒤로 가기 [11]메인페이지 이동 [12]종료");
+        System.out.println("[1]게시글 조회 [2]게시글 수정 [3]게시글 삭제 [4]댓글 보기 [5]댓글 작성 [6]댓글 수정 [7]댓글 삭제 [8]댓글 공감 [9]댓글 비공감 [10]공감/비공감 취소 [11]뒤로 가기 [12]메인페이지 이동 [13]종료");
         System.out.print("이동 메뉴 선택 : ");
         int choice = scanner.nextInt();
         switch (choice){
@@ -59,18 +59,18 @@ public class Free_Reply_Controller {
             case 7:
                 System.out.println("댓글 삭제 권한이 없습니다.");
                 break;
-            case 8, 9:
+            case 8, 9, 10:
                 System.out.println("권한이 없습니다. 로그인 해주세요.");
                 break;
-            case 10: // 뒤로 가기
+            case 11: // 뒤로 가기
                 Free_Post_Controller.setIsFreeReply(false);
                 break;
-            case 11:
+            case 12:
                 Free_Post_Controller.setIsFreeReply(false);
                 Post_Controller.setIsFreePost(false);
                 controller.setPostIn(false);
                 break;
-            case 12:
+            case 13:
                 System.exit(0);
                 break;
         }
@@ -88,7 +88,7 @@ public class Free_Reply_Controller {
         boolean isDislike;
 
         System.out.printf("====== KH WEBTOON 자유 게시글 [%d]번 (회원) =======\n",free_Post_Number);
-        System.out.println("[1]게시글 조회 [2]게시글 수정 [3]게시글 삭제 [4]댓글 보기 [5]댓글 작성 [6]댓글 수정 [7]댓글 삭제 [8]댓글 공감 [9]댓글 비공감 [10]뒤로 가기 [11]메인페이지 이동 [12]종료");
+        System.out.println("[1]게시글 조회 [2]게시글 수정 [3]게시글 삭제 [4]댓글 보기 [5]댓글 작성 [6]댓글 수정 [7]댓글 삭제 [8]댓글 공감 [9]댓글 비공감 [10]공감/비공감 취소 [11]뒤로 가기 [12]메인페이지 이동 [13]종료");
         System.out.print("이동 메뉴 선택 : ");
         int choice = scanner.nextInt();
         switch (choice){
@@ -141,7 +141,7 @@ public class Free_Reply_Controller {
                 if (!isSuccess){
                     isLike = redao.replyEval_Insert(redao.replyEvalInsert_Input_Auto(user_Number,reply_Number,reply_Like));
                     if (isLike) {
-                        rdao.reply_Update_Like(rdao.replyUpdate_Like_Dislike_Input_Auto(reply_Number));
+                        rdao.reply_Update_Like_Up(rdao.replyUpdate_Like_Dislike_Input_Auto(reply_Number));
                         System.out.println("공감합니다.");
                     }
                     else System.out.println("오류 발생");
@@ -153,9 +153,9 @@ public class Free_Reply_Controller {
                 reply_Number = scanner.nextInt();
                 isSuccess = redao.replyEvaluation_Check(user_Number, reply_Number);
                 if (!isSuccess){
-                    isDislike = redao.replyEval_Insert(redao.replyEvalInsert_Input_Auto(user_Number,reply_Number,reply_Like));
+                    isDislike = redao.replyEval_Insert(redao.replyEvalInsert_Input_Auto(user_Number,reply_Number,reply_Dislike));
                     if (isDislike) {
-                        rdao.reply_Update_Dislike(rdao.replyUpdate_Like_Dislike_Input_Auto(reply_Number));
+                        rdao.reply_Update_Dislike_Up(rdao.replyUpdate_Like_Dislike_Input_Auto(reply_Number));
                         System.out.println("비공감합니다.");
                     }
                     else System.out.println("오류 발생");
@@ -163,14 +163,31 @@ public class Free_Reply_Controller {
                 else System.out.println("이미 비공감했습니다.");
                 break;
             case 10:
-                Free_Post_Controller.setIsFreeReply(false);
+                System.out.print("공감/비공감 취소할 댓글 번호 입력 : ");
+                reply_Number = scanner.nextInt();
+                int like_Before_Number = redao.replyEvaluation_Comparison_Before(reply_Number); // Delete 하기 전의 like 개수
+                isSuccess =  redao.reply_Evaluation_Delete_Auto(user_Number,reply_Number);
+                int like_After_Number = redao.replyEvaluation_Comparison_After(reply_Number); // Delete 한 후의 like 개수
+                if (isSuccess) {
+                    if (like_Before_Number == like_After_Number) {
+                        rdao.reply_Update_Dislike_Down(rdao.replyUpdate_Like_Dislike_Input_Auto(reply_Number));
+                        System.out.println("취소 성공");
+                    } else {
+                        rdao.reply_Update_Like_Down(rdao.replyUpdate_Like_Dislike_Input_Auto(reply_Number));
+                        System.out.println("취소 성공");
+                    }
+                }
+                else System.out.println("공감/비공감 하지 않았습니다.");
                 break;
             case 11:
+                Free_Post_Controller.setIsFreeReply(false);
+                break;
+            case 12:
                 Free_Post_Controller.setIsFreeReply(false);
                 Post_Controller.setIsFreePost(false);
                 controller.setPostIn(false);
                 break;
-            case 12:
+            case 13:
                 System.exit(0);
                 break;
         }

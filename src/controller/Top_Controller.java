@@ -16,6 +16,7 @@ public class Top_Controller {
     private static boolean isLoggedIn = false;
     private static boolean isWebtoonIn = false;
     private static boolean isPostIn = false;
+    private static boolean isMyPage = false;
 
     public static void top_Controller_Start() throws SQLException {
         Scanner scanner = new Scanner(System.in);
@@ -96,7 +97,10 @@ public class Top_Controller {
                     }
                     break;
                 case 2:
-
+                    isMyPage = true;
+                    while (isMyPage){
+                     Member_Info_Controller.memberInfo();
+                    }
                     break;
                 case 3:
                     isWebtoonIn = true;
@@ -132,6 +136,18 @@ public class Top_Controller {
     }
     public void setPostIn(boolean postIn) {
         isPostIn = postIn;
+    }
+    public static boolean isIsMyPage() {
+        return isMyPage;
+    }
+    public static void setIsMyPage(boolean isMyPage) {
+        Top_Controller.isMyPage = isMyPage;
+    }
+    public static boolean isIsLoggedIn() {
+        return isLoggedIn;
+    }
+    public static void setIsLoggedIn(boolean isLoggedIn) {
+        Top_Controller.isLoggedIn = isLoggedIn;
     }
 }
 

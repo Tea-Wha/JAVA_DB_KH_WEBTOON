@@ -13,6 +13,7 @@ public class Table_Controller {
     Post_DAO pdao = new Post_DAO();
     Reply_DAO rdao = new Reply_DAO();
     Reply_Evaluation_DAO redao = new Reply_Evaluation_DAO();
+    String filePath = "C:\\Users\\user1\\Downloads\\webtoon_cp949.csv";
 
     public void createTable(){
         mtdao.member_Type_Create();
@@ -31,5 +32,6 @@ public class Table_Controller {
         gdao.genreDefault_Value();
         mtdao.memberTypeDefault_Value();
         pldao.platformDefault_Value();
+        wdao.insertDataFromCSV(filePath);
     }
 }

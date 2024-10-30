@@ -325,7 +325,7 @@ public class Reply_DAO {
             Common.close(conn);
         }
     }
-    public void reply_Update_Like(Reply_VO vo){
+    public void reply_Update_Like_Up(Reply_VO vo){
         String sql = "UPDATE 댓글 SET 공감수 = 공감수 + 1 WHERE 댓글번호 = ?";
         try{
             conn = Common.getConnection();
@@ -342,19 +342,17 @@ public class Reply_DAO {
             Common.close(conn);
         }
     }
-    public boolean reply_Update_Dislike(Reply_VO vo){
+    public void reply_Update_Dislike_Up(Reply_VO vo){
         String sql = "UPDATE 댓글 SET 비공감수 = 비공감수 + 1 WHERE 댓글번호 = ?";
         try{
             conn = Common.getConnection();
             psmt = conn.prepareStatement(sql);
             psmt.setInt(1,vo.getReply_Num());
             psmt.executeUpdate();
-            return true;
         }
         catch (Exception e){
             System.out.println(e);
             System.out.println("비공감 누르기 실패");
-            return false;
         }
         finally {
             Common.close(psmt);
@@ -366,6 +364,40 @@ public class Reply_DAO {
         this.reply_Number = reply_Number;
         Reply_VO vo = new Reply_VO(reply_Number);
         return vo;
+    }
+    public void reply_Update_Like_Down(Reply_VO vo){
+        String sql = "UPDATE 댓글 SET 공감수 = 공감수 - 1 WHERE 댓글번호 = ?";
+        try{
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1,vo.getReply_Num());
+            psmt.executeUpdate();
+        }
+        catch (Exception e){
+            System.out.println(e);
+            System.out.println("공감 삭제 실패");
+        }
+        finally {
+            Common.close(psmt);
+            Common.close(conn);
+        }
+    }
+    public void reply_Update_Dislike_Down(Reply_VO vo){
+        String sql = "UPDATE 댓글 SET 비공감수 = 비공감수 - 1 WHERE 댓글번호 = ?";
+        try{
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1,vo.getReply_Num());
+            psmt.executeUpdate();
+        }
+        catch (Exception e){
+            System.out.println(e);
+            System.out.println("비공감 삭제 실패");
+        }
+        finally {
+            Common.close(psmt);
+            Common.close(conn);
+        }
     }
 }
 

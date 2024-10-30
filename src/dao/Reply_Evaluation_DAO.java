@@ -22,6 +22,10 @@ public class Reply_Evaluation_DAO {
     private int member_Number;
     private int reply_Number;
     private int reply_Eval_Type;
+    PreparedStatement psmt_c1 = null;
+    PreparedStatement psmt_c2 = null;
+    ResultSet rs_c1 = null;
+    ResultSet rs_c2 = null;
 
     // Scanner 기능이 필요할 때 켜짐(?)
     public void Reply_Evaluation_DAO_Scanner(){
@@ -128,7 +132,92 @@ public class Reply_Evaluation_DAO {
         }
         finally {
             Common.close(psmt);
+            Common.close(rs);
             Common.close(conn);
         }
+    }
+    public boolean reply_Evaluation_Delete_Auto(int member_Number, int reply_Number) {
+        this.reply_Number = reply_Number;
+        this.member_Number = member_Number;
+        Scanner scanner = new Scanner(System.in);
+        if (replyEvaluation_Check(member_Number, reply_Number)) {
+            System.out.print("공감/비공감을 취소하시겠습니까? [1]예 [2]아니오 : ");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    String sql = "DELETE FROM 댓글평가 WHERE 회원번호 = ? AND 댓글번호 = ? ";
+                    try {
+                        conn = Common.getConnection();
+                        psmt = conn.prepareStatement(sql);
+                        psmt.setInt(1, member_Number);
+                        psmt.setInt(2,reply_Number);
+                        psmt.executeUpdate();
+                        return true;
+                    } catch (Exception e) {
+                        System.out.println("공감/비공감 취소 실패");
+                        return false;
+                    } finally {
+                        Common.close(psmt);
+                        Common.close(conn);
+                    }
+                case 2:
+                    System.out.print("메뉴로 돌아갑니다.");
+                    return false;
+                default:
+                    System.out.print("입력이 잘못되었습니다. 메뉴로 돌아갑니다.");
+                    return false;
+            }
+        }
+        else return false;
+    }
+    public int replyEvaluation_Comparison_Before(int reply_Number){
+        this.reply_Number = reply_Number;
+        int like_Number = 0;
+        String sql = "SELECT COUNT(*) FROM 댓글평가 WHERE 댓글번호 = ? AND 평가유형 = 0";
+        try{
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1, reply_Number);
+            rs = psmt.executeQuery();
+            if (rs.next()) {
+                like_Number = rs.getInt(1);
+            }
+            return like_Number;
+        }
+        catch (Exception e){
+            System.out.println(e);
+            System.out.print("입력된 정보가 일치하지 않습니다.");
+        }
+        finally {
+            Common.close(psmt);
+            Common.close(rs);
+            Common.close(conn);
+        }
+        return like_Number;
+    }
+    public int replyEvaluation_Comparison_After(int reply_Number){
+        this.reply_Number = reply_Number;
+        int like_Number = 0;
+        String sql = "SELECT COUNT(*) FROM 댓글평가 WHERE 댓글번호 = ? AND 평가유형 = 0";
+        try{
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1, reply_Number);
+            rs = psmt.executeQuery();
+            if (rs.next()) {
+                like_Number = rs.getInt(1);
+            }
+            return like_Number;
+        }
+        catch (Exception e){
+            System.out.println(e);
+            System.out.print("입력된 정보가 일치하지 않습니다.");
+        }
+        finally {
+            Common.close(psmt);
+            Common.close(rs);
+            Common.close(conn);
+        }
+        return like_Number;
     }
 }

@@ -22,6 +22,7 @@ public class Member_DAO {
     FileInputStream fileInputStream = null;
     private String member_ID;
     private Object member_PW;
+    private int member_Number;
 
     // Scanner 기능이 필요할 때 켜짐(?)
     public void Member_DAO_Scanner() {
@@ -160,11 +161,10 @@ public class Member_DAO {
             psmt.setString(1,vo.getMember_PW_Aft());
             psmt.setString(2,vo.getMember_ID());
             psmt.setString(3, vo.getMember_PW_Bef());
-            psmt.executeUpdate();
-            return true;
+            int affectedRows = psmt.executeUpdate();
+            return affectedRows > 0;
         }
         catch (Exception e){
-            System.out.println("회원 정보 변경 실패");
             return false;
         }
         finally {
@@ -177,6 +177,16 @@ public class Member_DAO {
         Scanner scanner = new Scanner(System.in);
         System.out.print("ID 입력 : ");
         String member_ID = scanner.next();
+        System.out.print("현재 PW 입력 : ");
+        String member_PW_before = scanner.next();
+        System.out.print("변경 PW 입력 : ");
+        String member_PW_after = scanner.next();
+        Member_VO vo = new Member_VO(member_ID, member_PW_before, member_PW_after);
+        return vo;
+    }
+    public Member_VO memberUpdate_Input_Auto(String member_ID){
+        this.member_ID = member_ID;
+        Scanner scanner = new Scanner(System.in);
         System.out.print("현재 PW 입력 : ");
         String member_PW_before = scanner.next();
         System.out.print("변경 PW 입력 : ");
@@ -244,5 +254,113 @@ public class Member_DAO {
             Common.close(psmt);
             Common.close(conn);
         }
+    }
+    public boolean member_Check_Auto(int member_Number, String member_PW){
+        this.member_Number = member_Number;
+        this.member_PW = member_PW;
+        boolean check = false;
+        String sql = "SELECT COUNT(*) FROM 회원 WHERE 회원번호 = ? AND 비밀번호 = ?";
+        try{
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1, member_Number);
+            psmt.setString(2, member_PW);
+            rs = psmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                check = count > 0;
+            }
+            return check;
+        }
+        catch (Exception e){
+            System.out.print("입력된 정보가 일치하지 않습니다.");
+            return false;
+        }
+        finally {
+            Common.close(psmt);
+            Common.close(conn);
+        }
+    }
+    public boolean member_Delete_Auto(int member_Number) {
+        this.member_Number = member_Number;
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("PW 재입력 : ");
+        String member_PW = scanner.next();
+        if (member_Check_Auto(member_Number, member_PW)) {
+            System.out.print("회원 탈퇴하시겠습니까? [1]예 [2]아니오 : ");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    String sql = "UPDATE 회원 SET 탈퇴여부 = 1 WHERE 회원번호 = ?";
+                    try {
+                        conn = Common.getConnection();
+                        psmt = conn.prepareStatement(sql);
+                        psmt.setInt(1, member_Number);
+                        psmt.executeUpdate();
+                        return true;
+                    } catch (Exception e) {
+                        return false;
+                    } finally {
+                        Common.close(psmt);
+                        Common.close(conn);
+                    }
+                case 2:
+                    System.out.print("메뉴로 돌아갑니다.");
+                    return false;
+                default:
+                    System.out.print("입력이 잘못되었습니다. 메뉴로 돌아갑니다.");
+                    return false;
+            }
+        }
+        else return false;
+    }
+    public List<Member_VO> single_Member_Select(int member_Number){
+        this.member_Number = member_Number;
+        List<Member_VO> list = new ArrayList<>();
+        try{
+            String query = "SELECT * FROM 회원 WHERE 회원번호 = ?"; // 회원 테이블 쿼리문 구성 (회원번호 정렬)
+            conn = Common.getConnection(); // 오라클 DB 연결
+            psmt = conn.prepareStatement(query);// statement 생성
+            psmt.setInt(1,member_Number);
+            rs = psmt.executeQuery(); // 쿼리문 실행
+            while (rs.next()){
+                int member_Num = rs.getInt("회원번호"); // 회원번호 열 데이터 가져오기
+                String member_ID = rs.getString("아이디"); // 아이디 열 데이터 가져오기
+                String member_PW = rs.getString("비밀번호"); // 비밀번호 열 데이터 가져오기
+                String member_Email = rs.getString("이메일"); // 이메일 열 데이터 가져오기
+                Date member_Birth_Date = rs.getDate("생년월일"); // 생년월일 열 데이터 가져오기
+                String member_Nickname = rs.getString("닉네임"); // 닉네임 열 데이터 가져오가
+                Date member_Reg_Date = rs.getDate("가입일"); // 가입일 열 데이터 가져오기
+                int member_Exist = rs.getInt("탈퇴여부"); // 탈퇴여부 열 데이터 가져오기
+                int member_Type_Num = rs.getInt("회원종류번호"); // 회원종류번호 열 데이터 가져오기
+                Member_VO vo = new Member_VO(member_Num,member_ID,member_PW,member_Email,member_Birth_Date,member_Nickname,member_Reg_Date,member_Exist,member_Type_Num);
+                list.add(vo); // 리스트 저장
+            }
+        }
+        catch (Exception e){
+            System.out.println("회원 조회 실패");
+        }
+        finally{
+            Common.close(rs);
+            Common.close(stmt);
+            Common.close(conn);
+        }
+        return list; // 리스트 반환
+    }
+    public void single_MemberSelect_Result(List<Member_VO> list){
+        System.out.println("---------------------------------");
+        System.out.println("            회원  정보            ");
+        for(Member_VO e : list){
+            System.out.println("회원 번호 : "+ e.getMember_Num()+" ");
+            System.out.println("아이디 : "+e.getMember_ID()+" ");
+            System.out.println("비밀번호 : "+e.getMember_PW()+" ");
+            System.out.println("이메일 : "+e.getMember_Email()+" ");
+            System.out.println("생년월일 : "+e.getMember_Birth_Date()+" ");
+            System.out.println("닉네임 : "+e.getMember_Nickname()+" ");
+            System.out.println("가입일 : "+e.getMember_Reg_Date()+" ");
+            System.out.println("탈퇴여부 : "+e.getMember_Exist()+" ");
+            System.out.println("회원종류번호 : "+e.getMember_Type_Num());
+        }
+        System.out.println("---------------------------------");
     }
 }
