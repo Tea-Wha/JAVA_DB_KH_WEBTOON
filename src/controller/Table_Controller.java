@@ -13,7 +13,7 @@ public class Table_Controller {
     Post_DAO pdao = new Post_DAO();
     Reply_DAO rdao = new Reply_DAO();
     Reply_Evaluation_DAO redao = new Reply_Evaluation_DAO();
-    String filePath = "C:\\Users\\Taewha\\Downloads\\webtoon_cp949.csv";
+    String filePath = "C:\\Users\\user1\\Downloads\\webtoon_cp949.csv";
 
     public void createTable(){
         mtdao.member_Type_Create();
