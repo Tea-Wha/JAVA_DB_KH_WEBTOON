@@ -1,12 +1,11 @@
 import dao.*;
-import vo.Post_VO;
 
 import java.util.Scanner;
 
-public class Main {
+public class Main_Test {
     public static void main(String[] args) {
 //          board_Function_Test();
-        reply_Function_Test();
+//        reply_Function_Test();
 //        member_Type_Function_Test();
 //        member_Function_Test();
 //        platform_Function_Test();

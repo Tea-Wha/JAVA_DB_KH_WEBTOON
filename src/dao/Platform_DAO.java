@@ -70,7 +70,6 @@ public class Platform_DAO {
             Common.close(stmt);
         }
     }
-
     // SELECT(조회) 기능 구현
     // 플랫폼 확인 기능
     public List<Platform_VO> platform_Select(){
