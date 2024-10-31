@@ -15,9 +15,9 @@ public class Webtoon_VO {
     // 이용가능연령 / NUMBER(2) / 0 -> ALL, 1 -> 12세, 2 -> 15세, 3 -> 18세, NOT NULL
     private BigDecimal webtoon_Rating;
     // 평점 / NUMBER(4,1) / CHECK webtoon_Rating BETWEEN 0.0 AND 10.0, NOT NULL
-    private int webtoon_Sub_Num;
+    private BigDecimal webtoon_Sub_Num;
     // 구독자수 / INTEGER / Default -> 0
-    private int webtoon_View_Num;
+    private BigDecimal webtoon_View_Num;
     // 조회수 / INTEGER / Default -> 0
     private int webtoon_Rel_Day;
     // 연재요일 / NUMBER(1) / CHECK webtoon_Rel_day BETWEEN 1 AND 7, NOT NULL
@@ -28,7 +28,7 @@ public class Webtoon_VO {
     private int platform_Num;
     // 플랫폼 번호 / INTEGER / FK REFERENCES platform(platform_Num), NOT NULL
 
-    public Webtoon_VO(int webtoon_Num, String webtoon_Name, String webtoon_Author, int genre_Num, int webtoon_Ava_Age, BigDecimal webtoon_Rating, int webtoon_Sub_Num, int webtoon_View_Num, int webtoon_Rel_Day, String webtoon_Page_Url, String webtoon_Thu_Url, int platform_Num) {
+    public Webtoon_VO(int webtoon_Num, String webtoon_Name, String webtoon_Author, int genre_Num, int webtoon_Ava_Age, BigDecimal webtoon_Rating, BigDecimal webtoon_Sub_Num, BigDecimal webtoon_View_Num, int webtoon_Rel_Day, String webtoon_Page_Url, String webtoon_Thu_Url, int platform_Num) {
         this.webtoon_Num = webtoon_Num;
         this.webtoon_Name = webtoon_Name;
         this.webtoon_Author = webtoon_Author;
@@ -79,17 +79,17 @@ public class Webtoon_VO {
     public void setWebtoon_Rating(BigDecimal webtoon_Rating) {
         this.webtoon_Rating = webtoon_Rating;
     }
-    public int getWebtoon_Sub_Num() {
+    public BigDecimal getWebtoon_Sub_Num() {
         return webtoon_Sub_Num;
     }
     public void setWebtoon_Sub_Num(int webtoon_Sub_Num) {
-        this.webtoon_Sub_Num = webtoon_Sub_Num;
+        this.webtoon_Sub_Num = BigDecimal.valueOf(webtoon_Sub_Num);
     }
-    public int getWebtoon_View_Num() {
+    public BigDecimal getWebtoon_View_Num() {
         return webtoon_View_Num;
     }
     public void setWebtoon_View_Num(int webtoon_View_Num) {
-        this.webtoon_View_Num = webtoon_View_Num;
+        this.webtoon_View_Num = BigDecimal.valueOf(webtoon_View_Num);
     }
     public int getWebtoon_Rel_Day() {
         return webtoon_Rel_Day;
