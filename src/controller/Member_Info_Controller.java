@@ -2,20 +2,9 @@ package controller;
 
 import dao.Member_DAO;
 
-import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Scanner;
 
 public class Member_Info_Controller {
-    Connection conn = null;
-    Statement stmt = null;
-    PreparedStatement psmt = null;
-    ResultSet rs = null;
-    Scanner scanner = null;
-    FileInputStream fileInputStream = null;
     private static int user_Number = -1;
     private static String user_ID = null;
 

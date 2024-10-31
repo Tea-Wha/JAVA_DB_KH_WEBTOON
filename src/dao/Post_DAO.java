@@ -1,9 +1,6 @@
 package dao;
 
 import common.Common;
-import oracle.jdbc.proxy.annotation.Post;
-import vo.Genre_VO;
-import vo.Platform_VO;
 import vo.Post_VO;
 
 import java.io.FileInputStream;
@@ -377,38 +374,20 @@ public class Post_DAO {
         }
         else return false;
     }
-    public boolean post_Delete_Auto(int post_Num, int member_Num) {
+    public void post_Delete_Auto(int post_Num) {
         this.post_Num = post_Num;
-        this.member_Num = member_Num;
-        Scanner scanner = new Scanner(System.in);
-        if (post_Check(post_Num, member_Num)) {
-            System.out.print("게시글을 삭제하시겠습니까? [1]예 [2]아니오 : ");
-            int choice = scanner.nextInt();
-            switch (choice) {
-                case 1:
-                    String sql = "DELETE FROM 게시글 WHERE 게시글번호 = ?";
-                    try {
-                        conn = Common.getConnection();
-                        psmt = conn.prepareStatement(sql);
-                        psmt.setInt(1, post_Num);
-                        psmt.executeUpdate();
-                        return true;
-                    } catch (Exception e) {
-                        System.out.println("게시글 삭제 실패");
-                        return false;
-                    } finally {
-                        Common.close(psmt);
-                        Common.close(conn);
-                    }
-                case 2:
-                    System.out.print("메뉴로 돌아갑니다.");
-                    return false;
-                default:
-                    System.out.print("입력이 잘못되었습니다. 메뉴로 돌아갑니다.");
-                    return false;
-            }
+        String sql = "DELETE FROM 게시글 WHERE 게시글번호 = ?";
+        try {
+            conn = Common.getConnection();
+            psmt = conn.prepareStatement(sql);
+            psmt.setInt(1, post_Num);
+            psmt.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("게시글 삭제 실패");
+        } finally {
+            Common.close(psmt);
+            Common.close(conn);
         }
-        else return false;
     }
     public boolean post_Check(int post_Num, int member_Num){
         this.post_Num = post_Num;
@@ -478,5 +457,25 @@ public class Post_DAO {
             Common.close(psmt);
             Common.close(conn);
         }
+    }
+    public boolean post_Delete_Auto_All(int post_Num, int member_Num) {
+        this.post_Num = post_Num;
+        this.member_Num = member_Num;
+        Scanner scanner = new Scanner(System.in);
+        if (post_Check(post_Num, member_Num)) {
+            System.out.print("게시글을 삭제하시겠습니까? [1]예 [2]아니오 : ");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                        return true;
+                case 2:
+                    System.out.print("메뉴로 돌아갑니다.");
+                    return false;
+                default:
+                    System.out.print("입력이 잘못되었습니다. 메뉴로 돌아갑니다.");
+                    return false;
+            }
+        }
+        else return false;
     }
 }

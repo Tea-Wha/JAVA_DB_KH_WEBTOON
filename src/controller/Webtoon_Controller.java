@@ -1,20 +1,8 @@
 package controller;
 
-import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Webtoon_Controller {
-    Connection conn = null;
-    Statement stmt = null;
-    PreparedStatement psmt = null;
-    ResultSet rs = null;
-    Scanner scanner = null;
-    FileInputStream fileInputStream = null;
     private static boolean isDay =  false;
     private static boolean isGenre = false;
     private static boolean isDayGenre = false;

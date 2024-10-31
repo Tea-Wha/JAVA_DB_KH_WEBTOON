@@ -399,5 +399,22 @@ public class Reply_DAO {
             Common.close(conn);
         }
     }
+    public void post_Reply_Delete_Auto(int post_Number) {
+        this.post_Number = post_Number;
+        String sql = "DELETE FROM 댓글 WHERE 게시글번호 = ?";
+            try {
+                conn = Common.getConnection();
+                psmt = conn.prepareStatement(sql);
+                psmt.setInt(1, post_Number);
+                psmt.executeUpdate();
+            }
+            catch (Exception e) {
+                System.out.println("댓글 삭제 실패");
+            }
+            finally {
+                Common.close(psmt);
+                Common.close(conn);
+            }
+    }
 }
 

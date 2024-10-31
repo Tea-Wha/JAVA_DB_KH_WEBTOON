@@ -2,20 +2,9 @@ package controller;
 
 import dao.Post_DAO;
 
-import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Scanner;
 
 public class Free_Post_Controller {
-    Connection conn = null;
-    Statement stmt = null;
-    PreparedStatement psmt = null;
-    ResultSet rs = null;
-    Scanner scanner = null;
-    FileInputStream fileInputStream = null;
     private static boolean isFreeReply = false;
     private static int boardType = 1; // 자유 게시판
     private static String free_Post_Search;

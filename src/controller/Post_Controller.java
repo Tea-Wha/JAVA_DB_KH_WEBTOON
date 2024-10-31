@@ -3,20 +3,9 @@ package controller;
 import dao.Board_DAO;
 import dao.Post_DAO;
 
-import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Scanner;
 
 public class Post_Controller {
-    Connection conn = null;
-    Statement stmt = null;
-    PreparedStatement psmt = null;
-    ResultSet rs = null;
-    Scanner scanner = null;
-    FileInputStream fileInputStream = null;
     private static boolean isNoticePost = false;
     private static boolean isFreePost = false;
     private static String post_Search;

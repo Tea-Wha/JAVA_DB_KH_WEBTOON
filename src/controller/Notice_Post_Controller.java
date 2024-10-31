@@ -11,12 +11,6 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 public class Notice_Post_Controller {
-    Connection conn = null;
-    Statement stmt = null;
-    PreparedStatement psmt = null;
-    ResultSet rs = null;
-    Scanner scanner = null;
-    FileInputStream fileInputStream = null;
     private static boolean isNoticeReply = false;
     private static int boardType = 0; // 공지 게시판
     private static String notice_Post_Search;

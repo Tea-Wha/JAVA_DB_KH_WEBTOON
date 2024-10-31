@@ -1,9 +1,7 @@
 package dao;
 
 import common.Common;
-import vo.Board_VO;
 import vo.Reply_Evaluation_VO;
-import vo.Reply_VO;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,6 +24,7 @@ public class Reply_Evaluation_DAO {
     PreparedStatement psmt_c2 = null;
     ResultSet rs_c1 = null;
     ResultSet rs_c2 = null;
+    private int post_Number;
 
     // Scanner 기능이 필요할 때 켜짐(?)
     public void Reply_Evaluation_DAO_Scanner(){
@@ -219,5 +218,31 @@ public class Reply_Evaluation_DAO {
             Common.close(conn);
         }
         return like_Number;
+    }
+    public void post_Reply_Evaluation_Delete_Auto (int post_Number){
+        this.post_Number = post_Number;
+        String delete_Query = "DELETE FROM 댓글평가 WHERE 댓글번호 = ?";
+        String select_Query = "SELECT 댓글번호 FROM 댓글 WHERE 게시글번호 = ?";
+        try{
+            conn = Common.getConnection();
+            psmt_c1 = conn.prepareStatement(select_Query);
+            psmt_c1.setInt(1,post_Number);
+            rs_c1 = psmt_c1.executeQuery();
+            psmt_c2 = conn.prepareStatement(delete_Query);
+            while (rs_c1.next()){
+                int reply_Number = rs_c1.getInt("댓글번호");
+                psmt_c2.setInt(1,reply_Number);
+                psmt_c2.executeUpdate();
+            }
+        }
+        catch (Exception e){
+            System.out.println("삭제 실패");
+        }
+        finally {
+            Common.close(psmt_c1);
+            Common.close(psmt_c2);
+            Common.close(rs_c1);
+            Common.close(conn);
+        }
     }
 }

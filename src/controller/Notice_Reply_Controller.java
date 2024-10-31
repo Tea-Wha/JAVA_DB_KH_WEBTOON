@@ -4,20 +4,9 @@ import dao.Post_DAO;
 import dao.Reply_DAO;
 import dao.Reply_Evaluation_DAO;
 
-import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Scanner;
 
 public class Notice_Reply_Controller {
-    Connection conn = null;
-    Statement stmt = null;
-    PreparedStatement psmt = null;
-    ResultSet rs = null;
-    Scanner scanner = null;
-    FileInputStream fileInputStream = null;
     private static int notice_Post_Number = -1;
     private static int user_Number = -1;
     private static int reply_Number = -1;
@@ -104,8 +93,11 @@ public class Notice_Reply_Controller {
                 else System.out.println("수정 권한이 없습니다.");
                 break;
             case 3:
-                isSuccess = pdao.post_Delete_Auto(notice_Post_Number,user_Number);
+                isSuccess = pdao.post_Delete_Auto_All(notice_Post_Number, user_Number);
                 if (isSuccess) {
+                    redao.post_Reply_Evaluation_Delete_Auto(notice_Post_Number);
+                    rdao.post_Reply_Delete_Auto(notice_Post_Number);
+                    pdao.post_Delete_Auto(notice_Post_Number);
                     System.out.println("게시글 삭제 성공");
                     Notice_Post_Controller.setIsNoticeReply(false);
                 }

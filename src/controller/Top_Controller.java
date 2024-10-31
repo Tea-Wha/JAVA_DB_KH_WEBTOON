@@ -1,18 +1,11 @@
 package controller;
 
-import java.io.FileInputStream;
 import java.sql.*;
 import java.util.Scanner;
 
 // 메인페이지 구현
 // 범위 제한 ->
 public class Top_Controller {
-    Connection conn = null;
-    Statement stmt = null;
-    PreparedStatement psmt = null;
-    ResultSet rs = null;
-    Scanner scanner = null;
-    FileInputStream fileInputStream = null;
     private static boolean isLoggedIn = false;
     private static boolean isWebtoonIn = false;
     private static boolean isPostIn = false;
